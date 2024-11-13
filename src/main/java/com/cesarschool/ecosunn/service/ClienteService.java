@@ -18,20 +18,17 @@ public class ClienteService {
     }
 
     // Adicionar um novo cliente
-    public boolean addCliente(Cliente cliente) {
+    public void addCliente(Cliente cliente) {
         if (cliente == null || cliente.getNome() == null || cliente.getEmail() == null) {
-            System.out.println("Dados do cliente inválidos");
-            return false;
+            throw new IllegalArgumentException("Dados do cliente inválidos");
         }
         clienteDAO.adicionarCliente(cliente);
-        return true;
     }
 
     // Obter um cliente pelo CPF
     public Cliente getClienteByCpf(String cpf) {
         if (cpf == null || cpf.isEmpty()) {
-            System.out.println("CPF inválido");
-            return null;
+            throw new IllegalArgumentException("CPF inválido");
         }
         return clienteDAO.buscarClientePorCpf(cpf);
     }
@@ -39,30 +36,25 @@ public class ClienteService {
     // Obter um cliente pelo CNPJ
     public Cliente getClienteByCnpj(String cnpj) {
         if (cnpj == null || cnpj.isEmpty()) {
-            System.out.println("CNPJ inválido");
-            return null;
+            throw new IllegalArgumentException("CNPJ inválido");
         }
         return clienteDAO.buscarClientePorCnpj(cnpj);
     }
 
     // Atualizar um cliente
-    public boolean updateCliente(Cliente cliente) {
+    public void updateCliente(Cliente cliente) {
         if (cliente == null || cliente.getNome() == null || cliente.getEmail() == null) {
-            System.out.println("Dados do cliente inválidos");
-            return false;
+            throw new IllegalArgumentException("Dados do cliente inválidos");
         }
         clienteDAO.atualizarCliente(cliente);
-        return true;
     }
 
-    // Deletar um cliente usando CPF e CNPJ
-    public boolean deleteCliente(String cpf, String cnpj) {
+    // Deletar um cliente usando CPF ou CNPJ
+    public void deleteCliente(String cpf, String cnpj) {
         if ((cpf == null || cpf.isEmpty()) && (cnpj == null || cnpj.isEmpty())) {
-            System.out.println("CPF e CNPJ inválidos");
-            return false;
+            throw new IllegalArgumentException("CPF ou CNPJ deve ser fornecido.");
         }
         clienteDAO.excluirCliente(cpf, cnpj);
-        return true;
     }
 
     // Listar todos os clientes
