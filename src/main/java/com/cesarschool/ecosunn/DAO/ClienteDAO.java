@@ -43,7 +43,7 @@ public class ClienteDAO {
             stmt.setInt(10, cliente.getTipo());
 
             stmt.executeUpdate();
-            System.out.println("Cliente inserido com sucesso.");
+            System.out.println("Cliente inserido com sucessoo.");
 
         } catch (SQLException e) {
             e.printStackTrace();
