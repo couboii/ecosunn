@@ -24,28 +24,13 @@ public class SpringController {
     }
 
     //FORNECEDOR - DIRETORIOS
-    @GetMapping("/fornecedores")
-    public String fornecedores(Model model) {
-        return "fornecedores";
-    }
+
 
     //PLACAS - DIRETORIOS
-    @GetMapping("/placas-solares")
-    public String placasSolares(Model model) {
-        return "placas-solares";
-    }
 
 
     //TECNICO - DIRETORIOS
-    @GetMapping("/tecnico")
-    public String tecnico(Model model) {
-        return "tecnico";
-    }
 
     //INSTALACAO - DIRETORIOS
-    @GetMapping("/instalacao")
-    public String instalacao(Model model) {
-        return "instalacao";
-    }
 
 }

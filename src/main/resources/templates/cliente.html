@@ -4,9 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cliente</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 20px; background-color: #f9f9f9; }
+        h1 { color: #333; }
+        .button-container { display: flex; flex-direction: column; gap: 10px; max-width: 200px; margin: auto; }
+        .button-container a { text-decoration: none; background-color: #007BFF; color: white; padding: 10px; border-radius: 5px; font-size: 16px; transition: background-color 0.3s; }
+        .button-container a:hover { background-color: #0056b3; }
+    </style>
 </head>
 <body>
-<h2>Cliente</h2>
-
+<h1>Cliente</h1>
+<div class="button-container">
+    <a href="/cliente/adicionar">Adicionar Cliente</a>
+    <a href="/cliente/remover">Remover Cliente</a>
+    <a href="/cliente/visualizar">Visualizar Clientes</a>
+    <a href="/cliente/editar">Editar Clientes</a>
+</div>
 </body>
 </html>

@@ -1,10 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Técnico</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 20px; background-color: #f9f9f9; }
+        h1 { color: #333; }
+        .button-container { display: flex; flex-direction: column; gap: 10px; max-width: 200px; margin: auto; }
+        .button-container a { text-decoration: none; background-color: #007BFF; color: white; padding: 10px; border-radius: 5px; font-size: 16px; transition: background-color 0.3s; }
+        .button-container a:hover { background-color: #0056b3; }
+    </style>
 </head>
 <body>
-
+<h1>Técnico</h1>
+<div class="button-container">
+    <a href="/tecnico/adicionar">Adicionar Técnico</a>
+    <a href="/tecnico/remover">Remover Técnico</a>
+    <a href="/tecnico/visualizar">Visualizar Técnicos</a>
+    <a href="/tecnico/editar">Editar Técnicos</a>
+</div>
 </body>
 </html>
