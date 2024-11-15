@@ -1,11 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo ao EcoSun!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            max-width: 400px;
+        }
+        h1 {
+            color: #333;
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .button-container a {
+            text-decoration: none;
+            background-color: #007BFF;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        .button-container a:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-<h1> AAAAA </h1>
+<div class="container">
+    <h1>Bem-vindo ao EcoSun</h1>
+    <p>Escolha uma das opções abaixo para navegar:</p>
+    <div class="button-container">
+        <a href="/cliente">Cliente</a>
+        <a href="/fornecedores">Fornecedores</a>
+        <a href="/placas-solares">Placas Solares</a>
+        <a href="/tecnico">Técnico</a>
+        <a href="/instalacao">Instalação</a>
+    </div>
+</div>
 </body>
 </html>
