@@ -11,4 +11,22 @@ public class SpringController {
     public String home(Model model) {
         return "home";
     }
+
+    //CLIENTE - DIRETORIOS
+    @GetMapping("/cliente")
+    public String cliente(Model model) {
+        return "cliente";
+    }
+
+    @GetMapping("/adicionarCliente")
+    public String adicionarCliente(Model model) {
+        return "adicionarCliente";
+    }
+
+    //FORNECEDOR - DIRETORIOS
+
+    //PLACAS - DIRETORIOS
+
+    //TECNICO - DIRETORIOS
+
 }
