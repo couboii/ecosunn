@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Clientes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h2 { color: #333; }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 90%;
+            max-width: 800px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        table th {
+            background-color: #007BFF;
+            color: white;
+        }
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        .button-container button {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .button-container button:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+<h2>Visualizar Clientes</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>CPF</th>
+        <th>Telefone</th>
+        <th>Cidade</th>
+        <th>Tipo</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Este espaço será preenchido dinamicamente com dados do banco -->
+    <tr>
+        <td>1</td>
+        <td>João Silva</td>
+        <td>joao@example.com</td>
+        <td>12345678901</td>
+        <td>(11) 98765-4321</td>
+        <td>São Paulo</td>
+        <td>Tipo 1</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>Maria Oliveira</td>
+        <td>maria@example.com</td>
+        <td>98765432101</td>
+        <td>(21) 87654-3210</td>
+        <td>Rio de Janeiro</td>
+        <td>Tipo 2</td>
+    </tr>
+    <!-- Adicionar mais linhas dinamicamente -->
+    </tbody>
+</table>
+<div class="button-container">
+    <button onclick="history.back()">Voltar</button>
+</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Fornecedor</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 20px; background-color: #f9f9f9; }
+        h2 { color: #333; }
+        form {
+            display: inline-block;
+            text-align: left;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        label { display: block; margin: 10px 0 5px; }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+<h2>Adicionar Fornecedor</h2>
+<form action="/adicionar_fornecedor" method="POST">
+    <label for="cnpj">CNPJ:</label>
+    <input type="text" id="cnpj" name="cnpj" maxlength="14" required>
+
+    <label for="nomeEmpresa">Nome da Empresa:</label>
+    <input type="text" id="nomeEmpresa" name="nomeEmpresa" required>
+
+    <label for="telefone">Telefone:</label>
+    <input type="text" id="telefone" name="telefone" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="rua">Rua:</label>
+    <input type="text" id="rua" name="rua" required>
+
+    <label for="bairro">Bairro:</label>
+    <input type="text" id="bairro" name="bairro" required>
+
+    <label for="cidade">Cidade:</label>
+    <input type="text" id="cidade" name="cidade" required>
+
+    <label for="cep">CEP:</label>
+    <input type="text" id="cep" name="cep" maxlength="8" required>
+
+    <button type="submit">Adicionar</button>
+    <button type="button" onclick="history.back()">Voltar</button>
+</form>
+</body>
+</html>

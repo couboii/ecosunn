@@ -4,13 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instalação</title>
+
     <style>
         body { font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 20px; background-color: #f9f9f9; }
         h1 { color: #333; }
         .button-container { display: flex; flex-direction: column; gap: 10px; max-width: 200px; margin: auto; }
-        .button-container a { text-decoration: none; background-color: #007BFF; color: white; padding: 10px; border-radius: 5px; font-size: 16px; transition: background-color 0.3s; }
-        .button-container a:hover { background-color: #0056b3; }
+        .button-container a, .button-container button {
+            text-decoration: none;
+            background-color: #007BFF;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .button-container a:hover, .button-container button:hover { background-color: #0056b3; }
     </style>
+
 </head>
 <body>
 <h1>Instalação</h1>
@@ -19,6 +31,8 @@
     <a href="/instalacao/remover">Remover Instalação</a>
     <a href="/instalacao/visualizar">Visualizar Instalações</a>
     <a href="/instalacao/editar">Editar Instalações</a>
+    <br>
+    <button onclick="history.back()">Voltar</button>
 </div>
 </body>
 </html>

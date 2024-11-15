@@ -23,10 +23,45 @@ public class SpringController {
         return "adicionarCliente";
     }
 
+    @GetMapping("/removerCliente")
+    public String removerCliente(Model model) {
+        return "removerCliente";
+    }
+
+    @GetMapping("/visualizarCliente")
+    public String visualizarCliente(Model model) {
+        return "visualizarCliente";
+    }
+
+    @GetMapping("/editarCliente")
+    public String editarCliente(Model model) {
+        return "editarCliente";
+    }
+
     //FORNECEDOR - DIRETORIOS
-    @GetMapping("/fornecedores-placa")
-    public String fornecedoresPlaca(Model model) {
-        return "fornecedores-placa";
+    @GetMapping("/fornecedor")
+    public String fornecedor(Model model) {
+        return "fornecedor";
+    }
+
+    @GetMapping("/adicionarFornecedores")
+    public String adicionarFornecedores(Model model) {
+        return "adicionarFornecedores";
+    }
+
+    @GetMapping("/removerFornecedores")
+    public String removerFornecedores(Model model) {
+        return "removerFornecedores";
+    }
+
+    @GetMapping("/visualizarFornecedores")
+    public String visualizarFornecedores(Model model) {
+        return "visualizarFornecedores";
+    }
+
+    @GetMapping("/editarFornecedores")
+    public String editarFornecedores(Model model) {
+        return "editarFornecedores";
     }
 
     //PLACAS - DIRETORIOS
