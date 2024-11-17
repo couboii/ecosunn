@@ -1,10 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Instalação</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h2 { color: #333; }
+        form {
+            display: inline-block;
+            text-align: left;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover { background-color: #0056b3; }
+        .button-container { text-align: center; margin-top: 10px; }
+    </style>
 </head>
 <body>
+<h2>Editar Instalação</h2>
+<form action="/editar_instalacao" method="POST">
+    <label for="idInstalacao">ID da Instalação:</label>
+    <input type="number" id="idInstalacao" name="idInstalacao" required placeholder="Digite o ID da Instalação">
 
+    <label for="detalhesServico">Detalhes do Serviço:</label>
+    <textarea id="detalhesServico" name="detalhesServico" rows="4" placeholder="Novos Detalhes do Serviço"></textarea>
+
+    <label for="dataInstalacao">Data de Instalação:</label>
+    <input type="date" id="dataInstalacao" name="dataInstalacao" placeholder="Nova Data de Instalação">
+
+    <button type="submit">Salvar Alterações</button>
+    <div class="button-container">
+        <button type="button" onclick="history.back()">Voltar</button>
+    </div>
+</form>
 </body>
 </html>
