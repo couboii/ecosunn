@@ -122,4 +122,23 @@ public class SpringController {
         return "instalacao";
     }
 
+    @GetMapping("/adicionarInstalacoes")
+    public String adicionarInstalacoes(Model model) {
+        return "adicionarInstalacoes";
+    }
+
+    @GetMapping("/removerInstalacao")
+    public String removerInstalacao(Model model) {
+        return "removerInstalacao";
+    }
+
+    @GetMapping("/visualizarInstalacao")
+    public String visualizarInstalacao(Model model) {
+        return "visualizarInstalacao";
+    }
+
+    @GetMapping("/editarInstalacao")
+    public String editarInstalacao(Model model) {
+        return "editarInstalacao";
+    }
 }
