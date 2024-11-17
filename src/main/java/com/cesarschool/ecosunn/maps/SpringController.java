@@ -141,4 +141,10 @@ public class SpringController {
     public String editarInstalacao(Model model) {
         return "editarInstalacao";
     }
+
+    //DASHBOARDS - DIRETORIOS
+    @GetMapping("/dashboards")
+    public String dashboards(Model model) {
+        return "dashboards";
+    }
 }
