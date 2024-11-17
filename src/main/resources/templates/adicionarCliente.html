@@ -53,7 +53,7 @@
 </head>
 <body>
 <h2>Cadastro de Cliente</h2>
-<form action="/cadastrar_cliente" method="POST">
+<form id="form-cadastro-cliente">
     <label for="nome">Nome:</label>
     <input type="text" id="nome" name="nome" required>
 
@@ -90,5 +90,47 @@
     <button type="submit">Enviar</button>
     <button type="button" onclick="history.back()">Voltar</button>
 </form>
+
 </body>
 </html>
+<script>
+    document.getElementById('form-cadastro-cliente').addEventListener('submit', async (event) => {
+        event.preventDefault(); // Evita o envio padrão do formulário
+
+        // Obtenha os dados do formulário
+        const cliente = {
+            nome: document.getElementById('nome').value,
+            email: document.getElementById('email').value,
+            cpf: document.getElementById('cpf').value,
+            cnpj: document.getElementById('cnpj').value,
+            rua: document.getElementById('rua').value,
+            bairro: document.getElementById('bairro').value,
+            cidade: document.getElementById('cidade').value,
+            cep: document.getElementById('cep').value,
+            telefone: document.getElementById('telefone').value,
+            tipoCliente: document.getElementById('tipoCliente').value
+        };
+
+        try {
+            // Envia os dados para o endpoint
+            const response = await fetch('http://localhost:8080/clientes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(cliente),
+            });
+
+            if (response.ok) {
+                alert('Cliente cadastrado com sucesso!');
+                document.getElementById('form-cadastro-cliente').reset(); // Limpa o formulário
+            } else {
+                const errorData = await response.json();
+                alert('Erro ao cadastrar cliente: ' + errorData.message);
+            }
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('Não foi possível conectar ao servidor.');
+        }
+    });
+</script>
