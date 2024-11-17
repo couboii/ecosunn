@@ -34,11 +34,45 @@
 </head>
 <body>
 <h2>Remover Placa Solar</h2>
-<form action="/remover_placa_solar" method="POST">
+<form id="form-remover-placa">
   <label for="idPlaca">ID da Placa:</label>
   <input type="number" id="idPlaca" name="idPlaca" required>
   <button type="submit">Remover</button>
   <button type="button" onclick="history.back()">Voltar</button>
 </form>
+
+<script>
+  document.getElementById('form-remover-placa').addEventListener('submit', async (event) => {
+    event.preventDefault(); // Evita o envio tradicional do formulário
+
+    const idPlaca = document.getElementById('idPlaca').value;
+
+    if (!idPlaca) {
+      alert('Por favor, insira o ID da placa.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8080/placas/${idPlaca}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        alert('Placa solar removida com sucesso!');
+        document.getElementById('form-remover-placa').reset(); // Limpa o formulário
+      } else if (response.status === 404) {
+        alert('Placa não encontrada. Verifique o ID e tente novamente.');
+      } else {
+        alert('Erro ao remover a placa solar.');
+      }
+    } catch (error) {
+      console.error('Erro:', error);
+      alert('Não foi possível conectar ao servidor.');
+    }
+  });
+</script>
 </body>
 </html>

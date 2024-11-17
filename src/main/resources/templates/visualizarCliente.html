@@ -56,7 +56,6 @@
 <table>
     <thead>
     <tr>
-        <th>ID</th>
         <th>Nome</th>
         <th>Email</th>
         <th>CPF</th>
@@ -65,31 +64,49 @@
         <th>Tipo</th>
     </tr>
     </thead>
-    <tbody>
-    <!-- Este espaço será preenchido dinamicamente com dados do banco -->
-    <tr>
-        <td>1</td>
-        <td>João Silva</td>
-        <td>joao@example.com</td>
-        <td>12345678901</td>
-        <td>(11) 98765-4321</td>
-        <td>São Paulo</td>
-        <td>Tipo 1</td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>Maria Oliveira</td>
-        <td>maria@example.com</td>
-        <td>98765432101</td>
-        <td>(21) 87654-3210</td>
-        <td>Rio de Janeiro</td>
-        <td>Tipo 2</td>
-    </tr>
-    <!-- Adicionar mais linhas dinamicamente -->
+    <tbody id="cliente-tbody">
+    <!-- Linhas serão preenchidas dinamicamente -->
     </tbody>
 </table>
 <div class="button-container">
     <button onclick="history.back()">Voltar</button>
 </div>
+
+<script>
+    // Função para carregar os dados dos clientes
+    async function carregarClientes() {
+        const tbody = document.getElementById('cliente-tbody');
+
+        try {
+            const response = await fetch('http://localhost:8080/clientes'); // Endpoint do backend
+            if (!response.ok) {
+                throw new Error('Erro ao carregar clientes.');
+            }
+
+            const clientes = await response.json(); // Converte a resposta para JSON
+            tbody.innerHTML = ''; // Limpa o corpo da tabela
+
+            // Preenche a tabela com os dados dos clientes
+            clientes.forEach(cliente => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${cliente.nome || 'N/A'}</td>
+                    <td>${cliente.email || 'N/A'}</td>
+                    <td>${cliente.cpf || 'N/A'}</td>
+                    <td>${cliente.telefone || 'N/A'}</td>
+                    <td>${cliente.cidade || cliente.endereco?.cidade || 'N/A'}</td>
+                    <td>${cliente.tipo || cliente.tipoCliente || 'N/A'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        } catch (error) {
+            console.error('Erro ao carregar clientes:', error);
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: red;">Erro ao carregar clientes.</td></tr>';
+        }
+    }
+
+    // Carrega os clientes ao abrir a página
+    carregarClientes();
+</script>
 </body>
 </html>

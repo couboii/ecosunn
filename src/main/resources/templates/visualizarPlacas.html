@@ -64,20 +64,49 @@
         <th>CNPJ do Fornecedor</th>
     </tr>
     </thead>
-    <tbody>
-    <!-- Dados serão preenchidos dinamicamente com o banco -->
-    <tr>
-        <td>1</td>
-        <td>10 anos</td>
-        <td>450W</td>
-        <td>4</td>
-        <td>101</td>
-        <td>12345678000101</td>
-    </tr>
+    <tbody id="placa-tbody">
+    <!-- Dados serão preenchidos dinamicamente -->
     </tbody>
 </table>
 <div class="button-container">
     <button onclick="history.back()">Voltar</button>
 </div>
+
+<script>
+    // Função para carregar os dados das placas solares
+    async function carregarPlacas() {
+        const tbody = document.getElementById('placa-tbody');
+
+        try {
+            const response = await fetch('http://localhost:8080/placas'); // Endpoint do backend
+            if (!response.ok) {
+                throw new Error('Erro ao carregar placas solares.');
+            }
+
+            const placas = await response.json(); // Converte a resposta para JSON
+            tbody.innerHTML = ''; // Limpa o corpo da tabela
+
+            // Preenche a tabela com os dados das placas solares
+            placas.forEach(placa => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${placa.idPlaca || 'N/A'}</td>
+                    <td>${placa.prazoGarantia || 'N/A'}</td>
+                    <td>${placa.potenciaPlaca || 'N/A'}</td>
+                    <td>${placa.qtdPlacas || 'N/A'}</td>
+                    <td>${placa.instalacaoId || 'N/A'}</td>
+                    <td>${placa.fornecedorCnpj || 'N/A'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        } catch (error) {
+            console.error('Erro ao carregar placas solares:', error);
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: red;">Erro ao carregar placas solares.</td></tr>';
+        }
+    }
+
+    // Carrega as placas solares ao abrir a página
+    carregarPlacas();
+</script>
 </body>
 </html>

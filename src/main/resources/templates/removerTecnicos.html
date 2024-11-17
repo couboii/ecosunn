@@ -34,11 +34,46 @@
 </head>
 <body>
 <h2>Remover Técnico</h2>
-<form action="/remover_tecnico" method="POST">
+<form id="form-remover-tecnico">
   <label for="idTecnico">ID do Técnico:</label>
   <input type="number" id="idTecnico" name="idTecnico" required>
   <button type="submit">Remover</button>
   <button type="button" onclick="history.back()">Voltar</button>
 </form>
+
+<script>
+  document.getElementById('form-remover-tecnico').addEventListener('submit', async (event) => {
+    event.preventDefault(); // Evita o envio tradicional do formulário
+
+    const idTecnico = document.getElementById('idTecnico').value;
+
+    if (!idTecnico) {
+      alert('Por favor, insira o ID do técnico.');
+      return;
+    }
+
+    try {
+      // Faz a requisição DELETE ao endpoint correto
+      const response = await fetch(`http://localhost:8080/tecnicos/${idTecnico}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        alert('Técnico removido com sucesso!');
+        document.getElementById('form-remover-tecnico').reset(); // Limpa o formulário
+      } else if (response.status === 404) {
+        alert('Técnico não encontrado. Verifique o ID e tente novamente.');
+      } else {
+        alert('Erro ao remover técnico.');
+      }
+    } catch (error) {
+      console.error('Erro:', error);
+      alert('Não foi possível conectar ao servidor.');
+    }
+  });
+</script>
 </body>
 </html>

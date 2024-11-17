@@ -34,11 +34,48 @@
 </head>
 <body>
 <h2>Remover Fornecedor</h2>
-<form action="/remover_fornecedor" method="POST">
+<form id="form-remover-fornecedor">
   <label for="cnpj">CNPJ do Fornecedor:</label>
-  <input type="text" id="cnpj" name="cnpj" maxlength="14" required>
+  <input type="text" id="cnpj" name="cnpj" maxlength="14" placeholder="Digite o CNPJ" required>
   <button type="submit">Remover</button>
   <button type="button" onclick="history.back()">Voltar</button>
 </form>
+
 </body>
 </html>
+<script>
+  document.getElementById('form-remover-fornecedor').addEventListener('submit', async (event) => {
+    event.preventDefault(); // Evita o envio padrão do formulário
+
+    const cnpj = document.getElementById('cnpj').value.trim(); // Remove espaços extras
+
+    if (!cnpj) {
+      alert('Por favor, insira o CNPJ do fornecedor.');
+      return;
+    }
+
+    try {
+      // Faz a requisição DELETE ao endpoint com o CNPJ
+      const response = await fetch(`http://localhost:8080/fornecedores/${cnpj}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (response.ok) {
+        alert('Fornecedor removido com sucesso!');
+        document.getElementById('form-remover-fornecedor').reset(); // Limpa o formulário
+      } else if (response.status === 404) {
+        alert('Fornecedor não encontrado.');
+      } else {
+        alert('Erro ao remover fornecedor.');
+      }
+    } catch (error) {
+      console.error('Erro:', error);
+      alert('Não foi possível conectar ao servidor.');
+    }
+  });
+</script>
+
+

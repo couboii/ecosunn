@@ -66,22 +66,51 @@
         <th>CEP</th>
     </tr>
     </thead>
-    <tbody>
-    <!-- Este espaço será preenchido dinamicamente com dados do banco -->
-    <tr>
-        <td>12345678000101</td>
-        <td>Fornecedor X</td>
-        <td>(11) 98765-4321</td>
-        <td>contato@fornecedorx.com</td>
-        <td>Rua A</td>
-        <td>Bairro B</td>
-        <td>São Paulo</td>
-        <td>01001000</td>
-    </tr>
+    <tbody id="fornecedor-tbody">
+    <!-- Linhas serão preenchidas dinamicamente -->
     </tbody>
 </table>
 <div class="button-container">
     <button onclick="history.back()">Voltar</button>
 </div>
+
+<script>
+    // Função para carregar os dados dos fornecedores
+    async function carregarFornecedores() {
+        const tbody = document.getElementById('fornecedor-tbody');
+
+        try {
+            const response = await fetch('http://localhost:8080/fornecedores'); // Endpoint do backend
+            if (!response.ok) {
+                throw new Error('Erro ao carregar fornecedores.');
+            }
+
+            const fornecedores = await response.json(); // Converte a resposta para JSON
+            tbody.innerHTML = ''; // Limpa o corpo da tabela
+
+            // Preenche a tabela com os dados dos fornecedores
+            fornecedores.forEach(fornecedor => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${fornecedor.cnpj || 'N/A'}</td>
+                    <td>${fornecedor.nomeEmpresa || 'N/A'}</td>
+                    <td>${fornecedor.telefone || 'N/A'}</td>
+                    <td>${fornecedor.email || 'N/A'}</td>
+                    <td>${fornecedor.rua || 'N/A'}</td>
+                    <td>${fornecedor.bairro || 'N/A'}</td>
+                    <td>${fornecedor.cidade || 'N/A'}</td>
+                    <td>${fornecedor.cep || 'N/A'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        } catch (error) {
+            console.error('Erro ao carregar fornecedores:', error);
+            tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: red;">Erro ao carregar fornecedores.</td></tr>';
+        }
+    }
+
+    // Carrega os fornecedores ao abrir a página
+    carregarFornecedores();
+</script>
 </body>
 </html>

@@ -34,7 +34,7 @@
 </head>
 <body>
 <h2>Adicionar Fornecedor</h2>
-<form action="/adicionar_fornecedor" method="POST">
+<form id="form-adicionar-fornecedor">
     <label for="cnpj">CNPJ:</label>
     <input type="text" id="cnpj" name="cnpj" maxlength="14" required>
 
@@ -64,3 +64,39 @@
 </form>
 </body>
 </html>
+<script>
+    document.getElementById('form-adicionar-fornecedor').addEventListener('submit', async (event) => {
+        event.preventDefault(); // Evita o envio padrão do formulário
+
+        const fornecedor = {
+            cnpj: document.getElementById('cnpj').value,
+            nomeEmpresa: document.getElementById('nomeEmpresa').value,
+            telefone: document.getElementById('telefone').value,
+            email: document.getElementById('email').value,
+            rua: document.getElementById('rua').value,
+            bairro: document.getElementById('bairro').value,
+            cidade: document.getElementById('cidade').value,
+            cep: document.getElementById('cep').value,
+        };
+
+        try {
+            const response = await fetch('http://localhost:8080/fornecedores', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(fornecedor),
+            });
+
+            if (response.ok) {
+                alert('Fornecedor adicionado com sucesso!');
+                document.getElementById('form-adicionar-fornecedor').reset();
+            } else {
+                alert('Erro ao adicionar fornecedor.');
+            }
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('Não foi possível conectar ao servidor.');
+        }
+    });
+</script>

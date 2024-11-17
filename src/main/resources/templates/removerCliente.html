@@ -53,11 +53,46 @@
 </head>
 <body>
 <h2>Remover Cliente</h2>
-<form action="/remover_cliente" method="POST">
+<form id="form-remover-cliente">
     <label for="cpf">Digite o CPF do Cliente:</label>
     <input type="text" id="cpf" name="cpf" maxlength="11" placeholder="Ex.: 12345678901" required>
     <button type="submit">Remover</button>
     <button type="button" onclick="history.back()">Voltar</button>
 </form>
+
 </body>
 </html>
+<script>
+    document.getElementById('form-remover-cliente').addEventListener('submit', async (event) => {
+        event.preventDefault(); // Evita o envio padrão do formulário
+
+        const cpf = document.getElementById('cpf').value;
+
+        if (!cpf) {
+            alert('CPF é obrigatório!');
+            return;
+        }
+
+        try {
+            // Faz a requisição DELETE à API REST
+            const response = await fetch(`http://localhost:8080/clientes?cpf=${cpf}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if (response.ok) {
+                alert('Cliente removido com sucesso!');
+                document.getElementById('form-remover-cliente').reset(); // Limpa o formulário
+            } else if (response.status === 404) {
+                alert('Cliente não encontrado.');
+            } else {
+                alert('Erro ao remover cliente.');
+            }
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('Não foi possível conectar ao servidor.');
+        }
+    });
+</script>

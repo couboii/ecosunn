@@ -34,7 +34,7 @@
 </head>
 <body>
 <h2>Adicionar Placa Solar</h2>
-<form action="/adicionar_placa_solar" method="POST">
+<form id="form-adicionar-placa">
   <label for="idPlaca">ID da Placa:</label>
   <input type="number" id="idPlaca" name="idPlaca" required>
 
@@ -51,10 +51,45 @@
   <input type="number" id="idInstalacao" name="idInstalacao" required>
 
   <label for="cnpjFornecedor">CNPJ do Fornecedor:</label>
-  <input type="text" id="cnpjFornecedor" name="cnpjFornecedor" maxlength="14" required>
+  <input type="text" id="cnpjFornecedor" name="cnpjFornecedor" required>
 
   <button type="submit">Adicionar</button>
   <button type="button" onclick="history.back()">Voltar</button>
 </form>
+
+<script>
+  document.getElementById('form-adicionar-placa').addEventListener('submit', async (event) => {
+    event.preventDefault(); // Evita o envio tradicional do formulário
+
+    const placaSolar = {
+      idPlaca: document.getElementById('idPlaca').value,
+      prazoGarantia: document.getElementById('prazoGarantia').value,
+      potenciaPlaca: document.getElementById('potenciaPlaca').value,
+      qtdPlacas: document.getElementById('quantidadePlacas').value,
+      instalacaoId: document.getElementById('idInstalacao').value,
+      fornecedorCnpj: document.getElementById('cnpjFornecedor').value,
+    };
+
+    try {
+      const response = await fetch('http://localhost:8080/placas', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(placaSolar),
+      });
+
+      if (response.ok) {
+        alert('Placa solar adicionada com sucesso!');
+        document.getElementById('form-adicionar-placa').reset(); // Limpa o formulário
+      } else {
+        alert('Erro ao adicionar placa solar. Verifique os dados e tente novamente.');
+      }
+    } catch (error) {
+      console.error('Erro:', error);
+      alert('Não foi possível conectar ao servidor.');
+    }
+  });
+</script>
 </body>
 </html>

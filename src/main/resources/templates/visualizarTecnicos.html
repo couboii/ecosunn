@@ -40,7 +40,7 @@
         .button-container button {
             background-color: #6c757d;
             color: white;
-            padding: 10px 20px;
+            padding: 10% 20%;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -63,19 +63,48 @@
         <th>ID da Instalação</th>
     </tr>
     </thead>
-    <tbody>
-    <!-- Dados serão preenchidos dinamicamente com o banco -->
-    <tr>
-        <td>1</td>
-        <td>João Silva</td>
-        <td>(11) 99999-9999</td>
-        <td>joao.silva@example.com</td>
-        <td>101</td>
-    </tr>
+    <tbody id="tecnico-tbody">
+    <!-- Linhas serão preenchidas dinamicamente -->
     </tbody>
 </table>
 <div class="button-container">
     <button onclick="history.back()">Voltar</button>
 </div>
+
+<script>
+    // Função para carregar os dados dos técnicos
+    async function carregarTecnicos() {
+        const tbody = document.getElementById('tecnico-tbody');
+
+        try {
+            const response = await fetch('http://localhost:8080/tecnicos'); // Endpoint do backend
+            if (!response.ok) {
+                throw new Error('Erro ao carregar técnicos.');
+            }
+
+            const tecnicos = await response.json(); // Converte a resposta para JSON
+            tbody.innerHTML = ''; // Limpa o corpo da tabela
+
+            // Preenche a tabela com os dados dos técnicos
+            tecnicos.forEach(tecnico => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${tecnico.idTecnico || 'N/A'}</td>
+                    <td>${tecnico.nome || 'N/A'}</td>
+                    <td>${tecnico.telefone || 'N/A'}</td>
+                    <td>${tecnico.email || 'N/A'}</td>
+                    <td>${tecnico.instalacaoId || 'N/A'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        } catch (error) {
+            console.error('Erro ao carregar técnicos:', error);
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: red;">Erro ao carregar técnicos.</td></tr>';
+        }
+    }
+
+    // Carrega os técnicos ao abrir a página
+    carregarTecnicos();
+</script>
 </body>
 </html>
