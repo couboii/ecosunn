@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adicionar Placa Solar</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 20px; background-color: #f9f9f9; }
+    h2 { color: #333; }
+    form {
+      display: inline-block;
+      text-align: left;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    label { display: block; margin: 10px 0 5px; }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover { background-color: #0056b3; }
+  </style>
+</head>
+<body>
+<h2>Adicionar Placa Solar</h2>
+<form action="/adicionar_placa_solar" method="POST">
+  <label for="idPlaca">ID da Placa:</label>
+  <input type="number" id="idPlaca" name="idPlaca" required>
+
+  <label for="prazoGarantia">Prazo de Garantia:</label>
+  <input type="text" id="prazoGarantia" name="prazoGarantia" required>
+
+  <label for="potenciaPlaca">Potência da Placa:</label>
+  <input type="text" id="potenciaPlaca" name="potenciaPlaca" required>
+
+  <label for="quantidadePlacas">Quantidade de Placas:</label>
+  <input type="number" id="quantidadePlacas" name="quantidadePlacas" required>
+
+  <label for="idInstalacao">ID da Instalação:</label>
+  <input type="number" id="idInstalacao" name="idInstalacao" required>
+
+  <label for="cnpjFornecedor">CNPJ do Fornecedor:</label>
+  <input type="text" id="cnpjFornecedor" name="cnpjFornecedor" maxlength="14" required>
+
+  <button type="submit">Adicionar</button>
+  <button type="button" onclick="history.back()">Voltar</button>
+</form>
+</body>
+</html>

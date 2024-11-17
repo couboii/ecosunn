@@ -70,10 +70,50 @@ public class SpringController {
         return "placas-solares";
     }
 
+    @GetMapping("/adicionarPlacas")
+    public String adicionarPlacas(Model model) {
+        return "adicionarPlacas";
+    }
+
+    @GetMapping("/removerPlacas")
+    public String removerPlacas(Model model) {
+        return "removerPlacas";
+    }
+
+    @GetMapping("/visualizarPlacas")
+    public String visualizarPlacas(Model model) {
+        return "visualizarPlacas";
+    }
+
+    @GetMapping("/editarPlacas")
+    public String editarPlacas(Model model) {
+        return "editarPlacas";
+    }
+
     //TECNICO - DIRETORIOS
     @GetMapping("/tecnico")
     public String tecnico(Model model) {
         return "tecnico";
+    }
+
+    @GetMapping("/adicionarTecnicos")
+    public String adicionarTecnicos(Model model) {
+        return "adicionarTecnicos";
+    }
+
+    @GetMapping("/removerTecnicos")
+    public String removerTecnicos(Model model) {
+        return "removerTecnicos";
+    }
+
+    @GetMapping("/visualizarTecnicos")
+    public String visualizarTecnicos(Model model) {
+        return "visualizarTecnicos";
+    }
+
+    @GetMapping("editarTecnicos")
+    public String editarTecnicos(Model model) {
+        return "editarTecnicos";
     }
 
     //INSTALACAO - DIRETORIOS

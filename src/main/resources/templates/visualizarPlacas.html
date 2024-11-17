@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Placas Solares</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h2 { color: #333; }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 90%;
+            max-width: 800px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        table th {
+            background-color: #007BFF;
+            color: white;
+        }
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        .button-container button {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .button-container button:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+<h2>Visualizar Placas Solares</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID da Placa</th>
+        <th>Prazo de Garantia</th>
+        <th>Potência</th>
+        <th>Quantidade</th>
+        <th>ID da Instalação</th>
+        <th>CNPJ do Fornecedor</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Dados serão preenchidos dinamicamente com o banco -->
+    <tr>
+        <td>1</td>
+        <td>10 anos</td>
+        <td>450W</td>
+        <td>4</td>
+        <td>101</td>
+        <td>12345678000101</td>
+    </tr>
+    </tbody>
+</table>
+<div class="button-container">
+    <button onclick="history.back()">Voltar</button>
+</div>
+</body>
+</html>

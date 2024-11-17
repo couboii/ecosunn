@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adicionar Técnico</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 20px; background-color: #f9f9f9; }
+    h2 { color: #333; }
+    form {
+      display: inline-block;
+      text-align: left;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    label { display: block; margin: 10px 0 5px; }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover { background-color: #0056b3; }
+  </style>
+</head>
+<body>
+<h2>Adicionar Técnico</h2>
+<form action="/adicionar_tecnico" method="POST">
+  <label for="idTecnico">ID do Técnico:</label>
+  <input type="number" id="idTecnico" name="idTecnico" required>
+
+  <label for="nome">Nome:</label>
+  <input type="text" id="nome" name="nome" required>
+
+  <label for="telefone">Telefone:</label>
+  <input type="text" id="telefone" name="telefone" required>
+
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" required>
+
+  <label for="idInstalacao">ID da Instalação:</label>
+  <input type="number" id="idInstalacao" name="idInstalacao" required>
+
+  <button type="submit">Adicionar</button>
+  <button type="button" onclick="history.back()">Voltar</button>
+</form>
+</body>
+</html>
