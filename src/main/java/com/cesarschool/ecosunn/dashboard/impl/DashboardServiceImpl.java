@@ -4,20 +4,23 @@ import com.cesarschool.ecosunn.dashboard.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class DashboardServiceImpl implements DashboardService {
 
-    @Autowired
     private DashboardRepositoryImpl dashboardRepository;
 
-    @Override
-    public long countByCpf() {
-        return dashboardRepository.countByCpf();
+    public DashboardServiceImpl(DashboardRepositoryImpl dashboardRepository) {
+        this.dashboardRepository = dashboardRepository;
     }
 
-    @Override
-    public long countByCnpj() {
-        return dashboardRepository.countByCnpj();
-    }
+    public Map<String, Long> contagemTipoClientes(){
+    Map<String, Long> tiposClientes = new HashMap<>();
+        tiposClientes.put("CPF", dashboardRepository.countByCpf());
+        tiposClientes.put("CNPJ", dashboardRepository.countByCnpj());
+        return tiposClientes;
+        }
 }
 

@@ -72,11 +72,13 @@
     // Função para buscar os dados de tipo de cliente e exibir o gráfico
     async function fetchTipoClientes() {
         try {
-            const response = await fetch('http://localhost:8080/dashboard/tipo-clientes');
+            const response = await fetch('http://localhost:8080/dashboard/tipo');
             if (response.ok) {
                 const tiposClientes = await response.json();
+                console.log('Dados recebidos:', tiposClientes);
                 renderPieChart(tiposClientes);
             } else {
+                console.error('Erro ao carregar dados:', response.status);
                 document.getElementById('tipo-clientes').textContent = 'Erro ao carregar dados.';
             }
         } catch (error) {
@@ -87,8 +89,11 @@
 
     // Função para renderizar gráfico de pizza
     function renderPieChart(data) {
+        console.log('Criando gráfico com dados:', data);
         const ctx = document.createElement('canvas');
-        document.getElementById('tipo-clientes').appendChild(ctx);
+        const container = document.getElementById('tipo-clientes');
+        container.innerHTML = ''; // Limpa o conteúdo existente
+        container.appendChild(ctx);
 
         new Chart(ctx, {
             type: 'pie',
@@ -96,8 +101,8 @@
                 labels: Object.keys(data),
                 datasets: [{
                     data: Object.values(data),
-                    backgroundColor: ['#007BFF', '#28A745'],
-                    hoverBackgroundColor: ['#0056b3', '#1e7e34']
+                    backgroundColor: ['#007BFF', '#28A745', '#FFC107', '#DC3545'],
+                    hoverBackgroundColor: ['#0056b3', '#1e7e34', '#e0a800', '#c82333']
                 }]
             },
             options: {
@@ -111,9 +116,17 @@
         });
     }
 
-    // Chama a função ao carregar a página
-    fetchTipoClientes();
+    // Dados de teste (fallback)
+    document.addEventListener('DOMContentLoaded', function () {
+        // Ativando os dados reais
+        fetchTipoClientes();
+
+        // Ative isso para teste com dados fixos
+        const mockData = { CPF: 100, CNPJ: 50 };
+        renderPieChart(mockData);
+    });
 </script>
+
 
 <!-- Adiciona a biblioteca Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

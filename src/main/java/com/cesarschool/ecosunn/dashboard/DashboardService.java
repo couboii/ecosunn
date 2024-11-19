@@ -1,6 +1,7 @@
 package com.cesarschool.ecosunn.dashboard;
 
+import java.util.Map;
+
 public interface DashboardService {
-    long countByCpf();
-    long countByCnpj();
+    public Map<String, Long> contagemTipoClientes();
 }

@@ -17,13 +17,13 @@ public class DashboardRepositoryImpl implements DashboardRepository {
 
     @Override
     public long countByCpf() {
-        String sql = "SELECT COUNT(*) FROM Cliente WHERE CPF IS NOT NULL AND CNPJ IS NULL";
+        String sql = "SELECT COUNT(*) FROM Clientes WHERE CPF IS NOT NULL AND CNPJ IS NULL";
         return jdbcTemplate.queryForObject(sql, Long.class);
     }
 
     @Override
     public long countByCnpj() {
-        String sql = "SELECT COUNT(*) FROM Cliente WHERE CNPJ IS NOT NULL AND CPF IS NULL";
+        String sql = "SELECT COUNT(*) FROM Clientes WHERE CNPJ IS NOT NULL AND CPF IS NULL";
         return jdbcTemplate.queryForObject(sql, Long.class);
     }
 }

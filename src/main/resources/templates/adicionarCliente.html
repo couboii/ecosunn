@@ -35,7 +35,7 @@
             font-weight: bold;
             color: #333;
         }
-        input, select, button {
+        input, button {
             width: calc(100% - 10px);
             padding: 10px;
             margin-bottom: 15px;
@@ -91,11 +91,8 @@
     <label for="telefone">Telefone:</label>
     <input type="text" id="telefone" name="telefone" required>
 
-    <label for="tipoCliente">Tipo de Cliente:</label>
-    <select id="tipoCliente" name="tipoCliente" required>
-        <option value="1">Tipo 1</option>
-        <option value="2">Tipo 2</option>
-    </select>
+    <label for="Clientes_TIPO">Clientes_TIPO:</label>
+    <input type="text" id="Clientes_TIPO" name="Clientes_TIPO" placeholder="Digite o tipo do cliente" required>
 
     <button type="submit">Cadastrar</button>
     <button type="button" onclick="history.back()">Voltar</button>
@@ -115,7 +112,7 @@
             cidade: document.getElementById('cidade').value,
             cep: document.getElementById('cep').value,
             telefone: document.getElementById('telefone').value,
-            tipoCliente: document.getElementById('tipoCliente').value,
+            Clientes_TIPO: document.getElementById('Clientes_TIPO').value,
         };
 
         try {
