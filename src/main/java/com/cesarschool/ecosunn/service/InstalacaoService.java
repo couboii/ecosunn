@@ -53,4 +53,11 @@ public class InstalacaoService {
         }
         instalacaoDAO.excluirInstalacao(id);
     }
+    // Método para contar técnicos por instalação
+    public int contarTecnicosPorInstalacao(int idInstalacao) {
+        if (idInstalacao <= 0) {
+            throw new IllegalArgumentException("ID de instalação inválido");
+        }
+        return instalacaoDAO.contarTecnicosPorInstalacao(idInstalacao);
+    }
 }

@@ -47,4 +47,9 @@ public class InstalacaoDAO {
         String sql = "DELETE FROM Instalacao WHERE ID_instalacao = ?";
         jdbcTemplate.update(sql, id);
     }
+    // Método para contar técnicos associados a uma instalação
+    public int contarTecnicosPorInstalacao(int idInstalacao) {
+        String sql = "SELECT ContarTecnicosPorInstalacao(?)";
+        return jdbcTemplate.queryForObject(sql, Integer.class, idInstalacao);
+    }
 }

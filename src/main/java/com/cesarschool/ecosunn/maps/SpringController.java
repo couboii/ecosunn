@@ -147,4 +147,11 @@ public class SpringController {
     public String dashboards(Model model) {
         return "dashboards";
     }
+
+    // CONSULTA TECNICO - DIRETÓRIO
+    @GetMapping("/consultatecnico")
+    public String consultarTecnico(Model model) {
+        return "consultatecnico"; // Nome do arquivo HTML na pasta "templates"
+    }
+
 }

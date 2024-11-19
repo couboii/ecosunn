@@ -43,7 +43,8 @@
             color: #333;
         }
 
-        input, button, table {
+        input, button {
+            width: 100%;
             padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
@@ -67,10 +68,17 @@
         button[type="button"] {
             background-color: #6c757d;
             color: white;
+            margin-bottom: 0;
         }
 
         button[type="button"]:hover {
             background-color: #5a6268;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         table {
@@ -146,8 +154,8 @@
             </tbody>
         </table>
 
-        <button type="submit">Salvar Alterações</button>
         <div class="button-container">
+            <button type="submit">Salvar Alterações</button>
             <button type="button" onclick="history.back()">Voltar</button>
         </div>
     </form>

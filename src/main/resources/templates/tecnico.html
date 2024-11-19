@@ -34,8 +34,6 @@
         }
         .button-container a, .button-container button {
             text-decoration: none;
-            background-color: #007BFF;
-            color: white;
             padding: 10px;
             border-radius: 5px;
             font-size: 16px;
@@ -44,11 +42,23 @@
             border: none;
             cursor: pointer;
         }
-        .button-container a:hover, .button-container button:hover {
+        .button-container a {
+            background-color: #007BFF;
+            color: white;
+        }
+        .button-container a:hover {
             background-color: #0056b3;
+        }
+        .button-container a[href="/consultatecnico"] {
+            background-color: #FFA500; /* Laranja claro */
+            color: white;
+        }
+        .button-container a[href="/consultatecnico"]:hover {
+            background-color: #FF8C00; /* Laranja mais escuro ao passar o mouse */
         }
         .button-container button {
             background-color: #6c757d;
+            color: white;
         }
         .button-container button:hover {
             background-color: #5a6268;
@@ -63,6 +73,7 @@
         <a href="/removerTecnicos">Remover Técnico</a>
         <a href="/visualizarTecnicos">Visualizar Técnicos</a>
         <a href="/editarTecnicos">Editar Técnicos</a>
+        <a href="/consultatecnico">Consulta</a>
         <br>
         <button onclick="history.back()">Voltar</button>
     </div>
