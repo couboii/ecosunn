@@ -5,19 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Remover Fornecedor</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 20px; background-color: #f9f9f9; }
-    h2 { color: #333; }
-    form {
-      display: inline-block;
-      text-align: left;
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(to bottom, #f8d7da, #ffffff);
+    }
+    .container {
       background-color: #fff;
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      max-width: 400px;
+      width: 90%;
+      text-align: left;
     }
-    label { display: block; margin: 10px 0 5px; }
+    h2 {
+      text-align: center;
+      color: #dc3545;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
     input, button {
-      width: 100%;
+      width: calc(100% - 10px);
       padding: 10px;
       margin-bottom: 15px;
       border: 1px solid #ccc;
@@ -25,29 +43,94 @@
       font-size: 16px;
     }
     button {
-      background-color: #DC3545;
+      background-color: #dc3545;
       color: white;
+      border: none;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
-    button:hover { background-color: #c82333; }
+    button:hover {
+      background-color: #c82333;
+    }
+    button:last-of-type {
+      background-color: #6c757d;
+    }
+    button:last-of-type:hover {
+      background-color: #5a6268;
+    }
+    table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 100%;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    table th, table td {
+      padding: 10px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+    table th {
+      background-color: #007BFF;
+      color: white;
+    }
+    table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
   </style>
 </head>
 <body>
-<h2>Remover Fornecedor</h2>
-<form id="form-remover-fornecedor">
-  <label for="cnpj">CNPJ do Fornecedor:</label>
-  <input type="text" id="cnpj" name="cnpj" maxlength="14" placeholder="Digite o CNPJ" required>
-  <button type="submit">Remover</button>
-  <button type="button" onclick="history.back()">Voltar</button>
-</form>
+<div class="container">
+  <h2>Remover Fornecedor</h2>
+  <form id="form-remover-fornecedor">
+    <label for="cnpj">CNPJ do Fornecedor:</label>
+    <input type="text" id="cnpj" name="cnpj" maxlength="14" placeholder="Digite o CNPJ" required>
 
-</body>
-</html>
+    <table id="fornecedores-tabela">
+      <thead>
+      <tr>
+        <th>CNPJ</th>
+        <th>Nome da Empresa</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- Dados serão preenchidos dinamicamente -->
+      </tbody>
+    </table>
+
+    <button type="submit">Remover</button>
+    <button type="button" onclick="history.back()">Voltar</button>
+  </form>
+</div>
+
 <script>
-  document.getElementById('form-remover-fornecedor').addEventListener('submit', async (event) => {
-    event.preventDefault(); // Evita o envio padrão do formulário
+  async function carregarFornecedores() {
+    try {
+      const response = await fetch('http://localhost:8080/fornecedores');
+      if (!response.ok) throw new Error('Erro ao carregar fornecedores.');
 
-    const cnpj = document.getElementById('cnpj').value.trim(); // Remove espaços extras
+      const fornecedores = await response.json();
+      const tabelaBody = document.querySelector('#fornecedores-tabela tbody');
+      tabelaBody.innerHTML = '';
+
+      fornecedores.forEach(fornecedor => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${fornecedor.cnpj}</td>
+          <td>${fornecedor.nomeEmpresa}</td>
+        `;
+        tabelaBody.appendChild(row);
+      });
+    } catch (error) {
+      console.error('Erro ao carregar fornecedores:', error);
+    }
+  }
+
+  document.getElementById('form-remover-fornecedor').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const cnpj = document.getElementById('cnpj').value.trim();
 
     if (!cnpj) {
       alert('Por favor, insira o CNPJ do fornecedor.');
@@ -55,17 +138,15 @@
     }
 
     try {
-      // Faz a requisição DELETE ao endpoint com o CNPJ
       const response = await fetch(`http://localhost:8080/fornecedores/${cnpj}`, {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        }
+        headers: { 'Content-Type': 'application/json' }
       });
 
       if (response.ok) {
         alert('Fornecedor removido com sucesso!');
-        document.getElementById('form-remover-fornecedor').reset(); // Limpa o formulário
+        document.getElementById('form-remover-fornecedor').reset();
+        carregarFornecedores();
       } else if (response.status === 404) {
         alert('Fornecedor não encontrado.');
       } else {
@@ -76,6 +157,8 @@
       alert('Não foi possível conectar ao servidor.');
     }
   });
+
+  carregarFornecedores();
 </script>
-
-
+</body>
+</html>

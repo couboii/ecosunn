@@ -6,33 +6,73 @@
     <title>Cliente</title>
 
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 20px; background-color: #f9f9f9; }
-        h1 { color: #333; }
-        .button-container { display: flex; flex-direction: column; gap: 10px; max-width: 200px; margin: auto; }
-        .button-container a, .button-container button {
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to bottom, #cce7ff, #ffffff); /* Gradiente azul para branco */
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 90%;
+            max-width: 400px; /* Responsivo */
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .button-container a {
             text-decoration: none;
             background-color: #007BFF;
             color: white;
             padding: 10px;
             border-radius: 5px;
             font-size: 16px;
+            text-align: center;
             transition: background-color 0.3s;
+        }
+        .button-container a:hover {
+            background-color: #0056b3;
+        }
+        .button-container button {
+            background-color: #dcdcdc; /* Botão cinza claro */
+            color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
             border: none;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
-        .button-container a:hover, .button-container button:hover { background-color: #0056b3; }
+        .button-container button:hover {
+            background-color: #c0c0c0; /* Cinza mais escuro no hover */
+        }
     </style>
 
 </head>
 <body>
-<h1>Cliente</h1>
-<div class="button-container">
-    <a href="/adicionarCliente">Adicionar Cliente</a>
-    <a href="/removerCliente">Remover Cliente</a>
-    <a href="/visualizarCliente">Visualizar Clientes</a>
-    <a href="/editarCliente">Editar Clientes</a>
-    <br>
-    <button onclick="history.back()">Voltar</button>
+<div class="container">
+    <h1>Cliente</h1>
+    <div class="button-container">
+        <a href="/adicionarCliente">Adicionar Cliente</a>
+        <a href="/removerCliente">Remover Cliente</a>
+        <a href="/visualizarCliente">Visualizar Clientes</a>
+        <a href="/editarCliente">Editar Clientes</a>
+        <button onclick="history.back()">Voltar</button>
+    </div>
 </div>
 </body>
 </html>

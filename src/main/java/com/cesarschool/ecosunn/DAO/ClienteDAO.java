@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public class ClienteDAO {
-
+    @Autowired
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -77,5 +77,14 @@ public class ClienteDAO {
     public List<Cliente> listarClientes() {
         String sql = "SELECT * FROM Clientes";
         return jdbcTemplate.query(sql, new ClienteRowMapper());
+    }
+    public long countByCpf() {
+        String sql = "SELECT COUNT(*) FROM Cliente WHERE CPF IS NOT NULL AND CNPJ IS NULL";
+        return jdbcTemplate.queryForObject(sql, Long.class);
+    }
+
+    public long countByCnpj() {
+        String sql = "SELECT COUNT(*) FROM Cliente WHERE CNPJ IS NOT NULL AND CPF IS NULL";
+        return jdbcTemplate.queryForObject(sql, Long.class);
     }
 }

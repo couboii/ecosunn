@@ -35,6 +35,27 @@
             border-radius: 5px;
             font-size: 16px;
         }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 400px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        table th {
+            background-color: #007BFF;
+            color: white;
+        }
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
         button {
             background-color: #007BFF;
             color: white;
@@ -46,12 +67,23 @@
 </head>
 <body>
 <h2>Editar Instalação</h2>
-<form action="/editar_instalacao" method="POST">
+<form id="form-editar-instalacao">
     <label for="idInstalacao">ID da Instalação:</label>
     <input type="number" id="idInstalacao" name="idInstalacao" required placeholder="Digite o ID da Instalação">
 
-    <label for="detalhesServico">Detalhes do Serviço:</label>
-    <textarea id="detalhesServico" name="detalhesServico" rows="4" placeholder="Novos Detalhes do Serviço"></textarea>
+    <table id="instalacoes-tabela">
+        <thead>
+        <tr>
+            <th>IDs das Instalações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Dados serão preenchidos dinamicamente -->
+        </tbody>
+    </table>
+
+    <label for="comentarioServico">Comentário do Serviço:</label>
+    <textarea id="comentarioServico" name="comentarioServico" rows="4" placeholder="Novo Comentário do Serviço"></textarea>
 
     <label for="dataInstalacao">Data de Instalação:</label>
     <input type="date" id="dataInstalacao" name="dataInstalacao" placeholder="Nova Data de Instalação">
@@ -61,5 +93,58 @@
         <button type="button" onclick="history.back()">Voltar</button>
     </div>
 </form>
+
+<script>
+    async function carregarInstalacoes() {
+        try {
+            const response = await fetch('http://localhost:8080/instalacoes');
+            if (!response.ok) throw new Error('Erro ao carregar instalações.');
+
+            const instalacoes = await response.json();
+            const tabelaBody = document.querySelector('#instalacoes-tabela tbody');
+
+            instalacoes.forEach(instalacao => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${instalacao.idInstalacao}</td>`;
+                tabelaBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Erro ao carregar instalações:', error);
+        }
+    }
+
+    document.getElementById('form-editar-instalacao').addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const instalacao = {
+            idInstalacao: document.getElementById('idInstalacao').value,
+            comentarioServico: document.getElementById('comentarioServico').value || null,
+            dataInstalacao: document.getElementById('dataInstalacao').value || null,
+        };
+
+        try {
+            const response = await fetch('http://localhost:8080/instalacoes', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(instalacao),
+            });
+
+            if (response.ok) {
+                alert('Instalação atualizada com sucesso!');
+                document.getElementById('form-editar-instalacao').reset();
+            } else {
+                alert('Erro ao atualizar instalação. Verifique os dados e tente novamente.');
+            }
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('Não foi possível conectar ao servidor.');
+        }
+    });
+
+    // Carrega os IDs das instalações ao abrir a página
+    carregarInstalacoes();
+</script>
 </body>
 </html>

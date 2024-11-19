@@ -27,7 +27,7 @@
             display: block;
             margin: 10px 0 5px;
         }
-        input, select, button {
+        input, button {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
@@ -41,17 +41,50 @@
             cursor: pointer;
         }
         button:hover { background-color: #0056b3; }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 400px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        table th {
+            background-color: #007BFF;
+            color: white;
+        }
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
         .button-container { text-align: center; margin-top: 10px; }
     </style>
 </head>
 <body>
 <h2>Editar Fornecedor</h2>
-<form action="/editar_fornecedor" method="POST">
+<form id="form-editar-fornecedor">
     <label for="cnpj">CNPJ do Fornecedor:</label>
     <input type="text" id="cnpj" name="cnpj" maxlength="14" required placeholder="Digite o CNPJ">
 
-    <label for="nome">Nome da Empresa:</label>
-    <input type="text" id="nome" name="nome" placeholder="Novo Nome da Empresa">
+    <table id="fornecedores-tabela">
+        <thead>
+        <tr>
+            <th>CNPJ</th>
+            <th>Nome da Empresa</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Dados serão preenchidos dinamicamente -->
+        </tbody>
+    </table>
+
+    <label for="nomeEmpresa">Nome da Empresa:</label>
+    <input type="text" id="nomeEmpresa" name="nomeEmpresa" placeholder="Novo Nome da Empresa">
 
     <label for="telefone">Telefone:</label>
     <input type="text" id="telefone" name="telefone" placeholder="Novo Telefone">
@@ -76,5 +109,66 @@
         <button type="button" onclick="history.back()">Voltar</button>
     </div>
 </form>
+
+<script>
+    async function carregarFornecedores() {
+        try {
+            const response = await fetch('http://localhost:8080/fornecedores');
+            if (!response.ok) throw new Error('Erro ao carregar fornecedores.');
+
+            const fornecedores = await response.json();
+            const tabelaBody = document.querySelector('#fornecedores-tabela tbody');
+
+            fornecedores.forEach(fornecedor => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${fornecedor.cnpj}</td>
+                    <td>${fornecedor.nomeEmpresa}</td>
+                `;
+                tabelaBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Erro ao carregar fornecedores:', error);
+        }
+    }
+
+    document.getElementById('form-editar-fornecedor').addEventListener('submit', async (event) => {
+        event.preventDefault(); // Impede o envio tradicional do formulário
+
+        const fornecedor = {
+            cnpj: document.getElementById('cnpj').value,
+            nomeEmpresa: document.getElementById('nomeEmpresa').value || null,
+            telefone: document.getElementById('telefone').value || null,
+            email: document.getElementById('email').value || null,
+            rua: document.getElementById('rua').value || null,
+            bairro: document.getElementById('bairro').value || null,
+            cidade: document.getElementById('cidade').value || null,
+            cep: document.getElementById('cep').value || null,
+        };
+
+        try {
+            const response = await fetch('http://localhost:8080/fornecedores', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(fornecedor),
+            });
+
+            if (response.ok) {
+                alert('Fornecedor atualizado com sucesso!');
+                document.getElementById('form-editar-fornecedor').reset();
+            } else {
+                alert('Erro ao atualizar fornecedor. Verifique os dados e tente novamente.');
+            }
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('Não foi possível conectar ao servidor.');
+        }
+    });
+
+    // Carrega os fornecedores ao abrir a página
+    carregarFornecedores();
+</script>
 </body>
 </html>

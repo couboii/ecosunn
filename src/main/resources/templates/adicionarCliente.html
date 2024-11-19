@@ -3,46 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário de Cadastro de Cliente</title>
+    <title>Cadastro de Cliente</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
             margin: 0;
-            padding: 20px;
-            background-color: #f9f9f9;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to bottom, #87CEFA, #ffffff);
         }
-        h2 { color: #333; }
         form {
-            display: inline-block;
-            text-align: left;
             background-color: #fff;
-            padding: 20px;
+            padding: 25px;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 90%;
             max-width: 400px;
+            text-align: left;
+        }
+        h2 {
+            text-align: center;
+            color: #007BFF;
+            margin-bottom: 20px;
         }
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
+            color: #333;
         }
         input, select, button {
             width: calc(100% - 10px);
-            padding: 8px;
+            padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 14px;
+            font-size: 16px;
         }
         button {
             background-color: #007BFF;
             color: white;
             border: none;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s ease;
         }
-        button:hover { background-color: #0056b3; }
+        button:hover {
+            background-color: #0056b3;
+        }
         button:last-of-type {
             background-color: #6c757d;
         }
@@ -52,8 +62,8 @@
     </style>
 </head>
 <body>
-<h2>Cadastro de Cliente</h2>
 <form id="form-cadastro-cliente">
+    <h2>Cadastro de Cliente</h2>
     <label for="nome">Nome:</label>
     <input type="text" id="nome" name="nome" required>
 
@@ -87,17 +97,14 @@
         <option value="2">Tipo 2</option>
     </select>
 
-    <button type="submit">Enviar</button>
+    <button type="submit">Cadastrar</button>
     <button type="button" onclick="history.back()">Voltar</button>
 </form>
 
-</body>
-</html>
 <script>
     document.getElementById('form-cadastro-cliente').addEventListener('submit', async (event) => {
-        event.preventDefault(); // Evita o envio padrão do formulário
+        event.preventDefault();
 
-        // Obtenha os dados do formulário
         const cliente = {
             nome: document.getElementById('nome').value,
             email: document.getElementById('email').value,
@@ -108,11 +115,10 @@
             cidade: document.getElementById('cidade').value,
             cep: document.getElementById('cep').value,
             telefone: document.getElementById('telefone').value,
-            tipoCliente: document.getElementById('tipoCliente').value
+            tipoCliente: document.getElementById('tipoCliente').value,
         };
 
         try {
-            // Envia os dados para o endpoint
             const response = await fetch('http://localhost:8080/clientes', {
                 method: 'POST',
                 headers: {
@@ -123,10 +129,9 @@
 
             if (response.ok) {
                 alert('Cliente cadastrado com sucesso!');
-                document.getElementById('form-cadastro-cliente').reset(); // Limpa o formulário
+                document.getElementById('form-cadastro-cliente').reset();
             } else {
-                const errorData = await response.json();
-                alert('Erro ao cadastrar cliente: ' + errorData.message);
+                alert('Erro ao cadastrar cliente.');
             }
         } catch (error) {
             console.error('Erro:', error);
@@ -134,3 +139,5 @@
         }
     });
 </script>
+</body>
+</html>

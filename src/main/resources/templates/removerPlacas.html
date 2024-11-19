@@ -5,8 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Remover Placa Solar</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 20px; background-color: #f9f9f9; }
-    h2 { color: #333; }
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    h2 {
+      color: #333;
+    }
     form {
       display: inline-block;
       text-align: left;
@@ -14,8 +22,13 @@
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
     }
-    label { display: block; margin: 10px 0 5px; }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
     input, button {
       width: 100%;
       padding: 10px;
@@ -29,7 +42,29 @@
       color: white;
       cursor: pointer;
     }
-    button:hover { background-color: #c82333; }
+    button:hover {
+      background-color: #c82333;
+    }
+    table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 400px;
+      background-color: #fff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    table th, table td {
+      padding: 10px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+    table th {
+      background-color: #007BFF;
+      color: white;
+    }
+    table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
   </style>
 </head>
 <body>
@@ -37,13 +72,46 @@
 <form id="form-remover-placa">
   <label for="idPlaca">ID da Placa:</label>
   <input type="number" id="idPlaca" name="idPlaca" required>
+
+  <table id="placas-tabela">
+    <thead>
+    <tr>
+      <th>ID da Placa</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Dados serão preenchidos dinamicamente -->
+    </tbody>
+  </table>
+
   <button type="submit">Remover</button>
   <button type="button" onclick="history.back()">Voltar</button>
 </form>
 
 <script>
+  async function carregarPlacas() {
+    try {
+      const response = await fetch('http://localhost:8080/placas');
+      if (!response.ok) throw new Error('Erro ao carregar placas solares.');
+
+      const placas = await response.json();
+      const tabelaBody = document.querySelector('#placas-tabela tbody');
+
+      // Limpa a tabela antes de adicionar os dados
+      tabelaBody.innerHTML = '';
+
+      placas.forEach(placa => {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${placa.idPlaca}</td>`;
+        tabelaBody.appendChild(row);
+      });
+    } catch (error) {
+      console.error('Erro ao carregar placas solares:', error);
+    }
+  }
+
   document.getElementById('form-remover-placa').addEventListener('submit', async (event) => {
-    event.preventDefault(); // Evita o envio tradicional do formulário
+    event.preventDefault();
 
     const idPlaca = document.getElementById('idPlaca').value;
 
@@ -62,7 +130,8 @@
 
       if (response.ok) {
         alert('Placa solar removida com sucesso!');
-        document.getElementById('form-remover-placa').reset(); // Limpa o formulário
+        document.getElementById('form-remover-placa').reset();
+        carregarPlacas(); // Atualiza a tabela
       } else if (response.status === 404) {
         alert('Placa não encontrada. Verifique o ID e tente novamente.');
       } else {
@@ -73,6 +142,9 @@
       alert('Não foi possível conectar ao servidor.');
     }
   });
+
+  // Carrega os IDs das placas ao abrir a página
+  carregarPlacas();
 </script>
 </body>
 </html>

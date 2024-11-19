@@ -7,20 +7,33 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
             margin: 0;
-            padding: 20px;
-            background-color: #f9f9f9;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #cce7ff, #ffffff);
         }
-        h2 { color: #333; }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
         table {
             margin: 20px auto;
             border-collapse: collapse;
-            width: 90%;
-            max-width: 800px;
-            background-color: #fff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
+            width: 100%;
+            border-radius: 5px;
+            overflow: hidden;
         }
         table th, table td {
             padding: 10px;
@@ -38,7 +51,7 @@
             margin-top: 20px;
         }
         .button-container button {
-            background-color: #6c757d;
+            background-color: #007BFF;
             color: white;
             padding: 10px 20px;
             border: none;
@@ -47,29 +60,31 @@
             transition: background-color 0.3s;
         }
         .button-container button:hover {
-            background-color: #5a6268;
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-<h2>Visualizar Clientes</h2>
-<table>
-    <thead>
-    <tr>
-        <th>Nome</th>
-        <th>Email</th>
-        <th>CPF</th>
-        <th>Telefone</th>
-        <th>Cidade</th>
-        <th>Tipo</th>
-    </tr>
-    </thead>
-    <tbody id="cliente-tbody">
-    <!-- Linhas serão preenchidas dinamicamente -->
-    </tbody>
-</table>
-<div class="button-container">
-    <button onclick="history.back()">Voltar</button>
+<div class="container">
+    <h2>Visualizar Clientes</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>CPF</th>
+            <th>Telefone</th>
+            <th>Cidade</th>
+            <th>Tipo</th>
+        </tr>
+        </thead>
+        <tbody id="cliente-tbody">
+        <!-- Linhas serão preenchidas dinamicamente -->
+        </tbody>
+    </table>
+    <div class="button-container">
+        <button onclick="history.back()">Voltar</button>
+    </div>
 </div>
 
 <script>
@@ -94,8 +109,8 @@
                     <td>${cliente.email || 'N/A'}</td>
                     <td>${cliente.cpf || 'N/A'}</td>
                     <td>${cliente.telefone || 'N/A'}</td>
-                    <td>${cliente.cidade || cliente.endereco?.cidade || 'N/A'}</td>
-                    <td>${cliente.tipo || cliente.tipoCliente || 'N/A'}</td>
+                    <td>${cliente.cidade || 'N/A'}</td>
+                    <td>${cliente.tipo || 'N/A'}</td>
                 `;
                 tbody.appendChild(tr);
             });

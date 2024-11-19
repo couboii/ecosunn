@@ -61,4 +61,16 @@ public class ClienteService {
     public List<Cliente> getAllClientes() {
         return clienteDAO.listarClientes();
     }
+
+    public long countByCpf() {
+        return clienteDAO.countByCpf();
+    }
+
+    public long countByCnpj() {
+        return clienteDAO.countByCnpj();
+    }
+
+
+
+
 }

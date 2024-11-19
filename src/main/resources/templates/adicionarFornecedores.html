@@ -5,19 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar Fornecedor</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 20px; background-color: #f9f9f9; }
-        h2 { color: #333; }
-        form {
-            display: inline-block;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to bottom, #d3d3d3, #ffffff);
+        }
+        .container {
             text-align: left;
             background-color: #fff;
-            padding: 20px;
+            padding: 20px 30px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
         }
-        label { display: block; margin: 10px 0 5px; }
-        input, select, button {
-            width: 100%;
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, button {
+            width: calc(100% - 10px);
             padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
@@ -27,43 +45,53 @@
         button {
             background-color: #007BFF;
             color: white;
+            border: none;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
-        button:hover { background-color: #0056b3; }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:last-of-type {
+            background-color: #6c757d;
+        }
+        button:last-of-type:hover {
+            background-color: #5a6268;
+        }
     </style>
 </head>
 <body>
-<h2>Adicionar Fornecedor</h2>
-<form id="form-adicionar-fornecedor">
-    <label for="cnpj">CNPJ:</label>
-    <input type="text" id="cnpj" name="cnpj" maxlength="14" required>
+<div class="container">
+    <h2>Adicionar Fornecedor</h2>
+    <form id="form-adicionar-fornecedor">
+        <label for="cnpj">CNPJ:</label>
+        <input type="text" id="cnpj" name="cnpj" maxlength="14" required>
 
-    <label for="nomeEmpresa">Nome da Empresa:</label>
-    <input type="text" id="nomeEmpresa" name="nomeEmpresa" required>
+        <label for="nomeEmpresa">Nome da Empresa:</label>
+        <input type="text" id="nomeEmpresa" name="nomeEmpresa" required>
 
-    <label for="telefone">Telefone:</label>
-    <input type="text" id="telefone" name="telefone" required>
+        <label for="telefone">Telefone:</label>
+        <input type="text" id="telefone" name="telefone" required>
 
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
 
-    <label for="rua">Rua:</label>
-    <input type="text" id="rua" name="rua" required>
+        <label for="rua">Rua:</label>
+        <input type="text" id="rua" name="rua" required>
 
-    <label for="bairro">Bairro:</label>
-    <input type="text" id="bairro" name="bairro" required>
+        <label for="bairro">Bairro:</label>
+        <input type="text" id="bairro" name="bairro" required>
 
-    <label for="cidade">Cidade:</label>
-    <input type="text" id="cidade" name="cidade" required>
+        <label for="cidade">Cidade:</label>
+        <input type="text" id="cidade" name="cidade" required>
 
-    <label for="cep">CEP:</label>
-    <input type="text" id="cep" name="cep" maxlength="8" required>
+        <label for="cep">CEP:</label>
+        <input type="text" id="cep" name="cep" maxlength="8" required>
 
-    <button type="submit">Adicionar</button>
-    <button type="button" onclick="history.back()">Voltar</button>
-</form>
-</body>
-</html>
+        <button type="submit">Adicionar</button>
+        <button type="button" onclick="history.back()">Voltar</button>
+    </form>
+</div>
 <script>
     document.getElementById('form-adicionar-fornecedor').addEventListener('submit', async (event) => {
         event.preventDefault(); // Evita o envio padrão do formulário
@@ -100,3 +128,5 @@
         }
     });
 </script>
+</body>
+</html>

@@ -12,14 +12,23 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
+            background: linear-gradient(to bottom, #b3d9ff, #ffffff);
         }
         .container {
             text-align: center;
             max-width: 400px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
         h1 {
             color: #333;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #666;
+            margin-bottom: 20px;
         }
         .button-container {
             display: flex;
@@ -39,6 +48,14 @@
         .button-container a:hover {
             background-color: #0056b3;
         }
+        /* Estilo especial para o botão Dashboards */
+        .button-container a[href="/dashboards"] {
+            background-color: #FFD700;
+            color: black;
+        }
+        .button-container a[href="/dashboards"]:hover {
+            background-color: #FFC107;
+        }
     </style>
 </head>
 <body>
@@ -51,7 +68,6 @@
         <a href="/placas-solares">Placas Solares</a>
         <a href="/tecnico">Técnico</a>
         <a href="/instalacao">Instalação</a>
-        <br>
         <a href="/dashboards">Dashboards</a>
     </div>
 </div>

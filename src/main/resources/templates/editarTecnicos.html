@@ -42,13 +42,46 @@
         }
         button:hover { background-color: #0056b3; }
         .button-container { text-align: center; margin-top: 10px; }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 400px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        table th {
+            background-color: #007BFF;
+            color: white;
+        }
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 <body>
 <h2>Editar Técnico</h2>
-<form action="/editar_tecnico" method="POST">
+<form id="form-editar-tecnico">
     <label for="idTecnico">ID do Técnico:</label>
     <input type="number" id="idTecnico" name="idTecnico" required placeholder="Digite o ID do Técnico">
+
+    <table id="tecnicos-tabela">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Dados serão preenchidos dinamicamente -->
+        </tbody>
+    </table>
 
     <label for="nome">Nome:</label>
     <input type="text" id="nome" name="nome" placeholder="Novo Nome">
@@ -62,10 +95,100 @@
     <label for="idInstalacao">ID da Instalação:</label>
     <input type="number" id="idInstalacao" name="idInstalacao" placeholder="Novo ID da Instalação">
 
+    <table id="instalacoes-tabela">
+        <thead>
+        <tr>
+            <th>ID</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Dados serão preenchidos dinamicamente -->
+        </tbody>
+    </table>
+
     <button type="submit">Salvar Alterações</button>
     <div class="button-container">
         <button type="button" onclick="history.back()">Voltar</button>
     </div>
 </form>
+
+<script>
+    async function carregarTecnicos() {
+        try {
+            const response = await fetch('http://localhost:8080/tecnicos');
+            if (!response.ok) throw new Error('Erro ao carregar técnicos.');
+
+            const tecnicos = await response.json();
+            const tabelaBody = document.querySelector('#tecnicos-tabela tbody');
+
+            tecnicos.forEach(tecnico => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${tecnico.idTecnico}</td>
+                    <td>${tecnico.nome}</td>
+                `;
+                tabelaBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Erro ao carregar técnicos:', error);
+        }
+    }
+
+    async function carregarInstalacoes() {
+        try {
+            const response = await fetch('http://localhost:8080/instalacoes');
+            if (!response.ok) throw new Error('Erro ao carregar instalações.');
+
+            const instalacoes = await response.json();
+            const tabelaBody = document.querySelector('#instalacoes-tabela tbody');
+
+            instalacoes.forEach(instalacao => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${instalacao.idInstalacao}</td>
+                `;
+                tabelaBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Erro ao carregar instalações:', error);
+        }
+    }
+
+    document.getElementById('form-editar-tecnico').addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const tecnico = {
+            idTecnico: document.getElementById('idTecnico').value,
+            nome: document.getElementById('nome').value || null,
+            telefone: document.getElementById('telefone').value || null,
+            email: document.getElementById('email').value || null,
+            instalacaoId: document.getElementById('idInstalacao').value || null,
+        };
+
+        try {
+            const response = await fetch('http://localhost:8080/tecnicos', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(tecnico),
+            });
+
+            if (response.ok) {
+                alert('Técnico atualizado com sucesso!');
+                document.getElementById('form-editar-tecnico').reset();
+            } else {
+                alert('Erro ao atualizar técnico. Verifique os dados e tente novamente.');
+            }
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('Não foi possível conectar ao servidor.');
+        }
+    });
+
+    // Carrega as tabelas ao abrir a página
+    carregarTecnicos();
+    carregarInstalacoes();
+</script>
 </body>
 </html>

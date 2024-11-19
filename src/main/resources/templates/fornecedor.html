@@ -5,32 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fornecedores</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 20px; background-color: #f9f9f9; }
-        h1 { color: #333; }
-        .button-container { display: flex; flex-direction: column; gap: 10px; max-width: 200px; margin: auto; }
-        .button-container a, .button-container button {
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to bottom, #d3d3d3, #ffffff); /* Fundo gradiente cinza para branco */
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .button-container a {
             text-decoration: none;
             background-color: #007BFF;
             color: white;
             padding: 10px;
             border-radius: 5px;
             font-size: 16px;
+            text-align: center;
             transition: background-color 0.3s;
+        }
+        .button-container a:hover {
+            background-color: #0056b3;
+        }
+        .button-container button {
+            background-color: #dcdcdc; /* Botão "Voltar" em cinza claro */
+            color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
             border: none;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
-        .button-container a:hover, .button-container button:hover { background-color: #0056b3; }
+        .button-container button:hover {
+            background-color: #c0c0c0; /* Cinza mais escuro ao passar o mouse */
+        }
     </style>
 </head>
 <body>
-<h1>Fornecedores</h1>
-<div class="button-container">
-    <a href="/adicionarFornecedores">Adicionar Fornecedor</a>
-    <a href="/removerFornecedores">Remover Fornecedor</a>
-    <a href="/visualizarFornecedores">Visualizar Fornecedores</a>
-    <a href="/editarFornecedores">Editar Fornecedores</a>
-    <br>
-    <button onclick="history.back()">Voltar</button>
+<div class="container">
+    <h1>Fornecedores</h1>
+    <div class="button-container">
+        <a href="/adicionarFornecedores">Adicionar Fornecedor</a>
+        <a href="/removerFornecedores">Remover Fornecedor</a>
+        <a href="/visualizarFornecedores">Visualizar Fornecedores</a>
+        <a href="/editarFornecedores">Editar Fornecedores</a>
+        <br>
+        <button onclick="history.back()">Voltar</button>
+    </div>
 </div>
 </body>
 </html>

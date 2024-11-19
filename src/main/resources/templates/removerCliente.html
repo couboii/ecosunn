@@ -3,46 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizar Cliente</title>
+    <title>Remover Cliente</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
             margin: 0;
-            padding: 20px;
-            background-color: #f9f9f9;
+            background: linear-gradient(to bottom, #ffcccc, #ffffff);
         }
-        h2 { color: #333; }
-        form {
-            display: inline-block;
-            text-align: left;
-            background-color: #fff;
+        .container {
+            text-align: center;
+            background-color: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        h2, h3 {
+            color: #333;
+            margin-bottom: 20px;
         }
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
         }
-        input, button {
+        input {
             width: calc(100% - 10px);
-            padding: 8px;
+            padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 14px;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f8f8;
+        }
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
         button {
-            background-color: #FF0000;
+            background-color: #d9534f;
             color: white;
+            padding: 10px 20px;
             border: none;
+            border-radius: 5px;
+            font-size: 14px;
             cursor: pointer;
             transition: background-color 0.3s;
+            flex: 1;
         }
-        button:hover { background-color: #cc0000; }
+        button:hover {
+            background-color: #c9302c;
+        }
         button:last-of-type {
             background-color: #6c757d;
         }
@@ -52,19 +90,59 @@
     </style>
 </head>
 <body>
-<h2>Remover Cliente</h2>
-<form id="form-remover-cliente">
-    <label for="cpf">Digite o CPF do Cliente:</label>
-    <input type="text" id="cpf" name="cpf" maxlength="11" placeholder="Ex.: 12345678901" required>
-    <button type="submit">Remover</button>
-    <button type="button" onclick="history.back()">Voltar</button>
-</form>
+<div class="container">
+    <h2>Remover Cliente</h2>
+    <form id="form-remover-cliente">
+        <label for="cpf">CPF do Cliente:</label>
+        <input type="text" id="cpf" name="cpf" maxlength="11" required placeholder="Digite o CPF do cliente">
+    </form>
 
-</body>
-</html>
+    <h3>Clientes Cadastrados</h3>
+    <table id="tabela-clientes">
+        <thead>
+        <tr>
+            <th>CPF</th>
+            <th>Nome</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Os dados serão inseridos aqui dinamicamente -->
+        </tbody>
+    </table>
+
+    <div class="button-container">
+        <button type="submit" form="form-remover-cliente">Remover</button>
+        <button type="button" onclick="history.back()">Voltar</button>
+    </div>
+</div>
+
 <script>
+    // Função para buscar clientes do banco e preencher a tabela
+    async function fetchClientes() {
+        try {
+            const response = await fetch('http://localhost:8080/clientes');
+            if (response.ok) {
+                const clientes = await response.json();
+                const tabela = document.getElementById('tabela-clientes').getElementsByTagName('tbody')[0];
+
+                clientes.forEach(cliente => {
+                    const row = tabela.insertRow();
+                    const cpfCell = row.insertCell(0);
+                    const nomeCell = row.insertCell(1);
+                    cpfCell.textContent = cliente.cpf || "N/A";
+                    nomeCell.textContent = cliente.nome || "N/A";
+                });
+            } else {
+                console.error('Erro ao buscar clientes:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error('Erro ao conectar ao servidor:', error);
+        }
+    }
+
+    // Função para remover cliente
     document.getElementById('form-remover-cliente').addEventListener('submit', async (event) => {
-        event.preventDefault(); // Evita o envio padrão do formulário
+        event.preventDefault();
 
         const cpf = document.getElementById('cpf').value;
 
@@ -74,17 +152,18 @@
         }
 
         try {
-            // Faz a requisição DELETE à API REST
             const response = await fetch(`http://localhost:8080/clientes?cpf=${cpf}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                }
+                },
             });
 
             if (response.ok) {
                 alert('Cliente removido com sucesso!');
-                document.getElementById('form-remover-cliente').reset(); // Limpa o formulário
+                document.getElementById('form-remover-cliente').reset();
+                document.getElementById('tabela-clientes').getElementsByTagName('tbody')[0].innerHTML = ''; // Limpa a tabela
+                fetchClientes(); // Atualiza a tabela
             } else if (response.status === 404) {
                 alert('Cliente não encontrado.');
             } else {
@@ -95,4 +174,9 @@
             alert('Não foi possível conectar ao servidor.');
         }
     });
+
+    // Chama a função para buscar clientes ao carregar a página
+    fetchClientes();
 </script>
+</body>
+</html>
