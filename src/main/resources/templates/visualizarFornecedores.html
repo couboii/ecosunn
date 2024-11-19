@@ -7,36 +7,60 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
             margin: 0;
-            padding: 20px;
-            background-color: #f9f9f9;
+            padding: 0;
+            background: linear-gradient(to bottom, #fffacd, #ffffff);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
-        h2 { color: #333; }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 95%;
+            max-width: 1200px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
         table {
             margin: 20px auto;
             border-collapse: collapse;
-            width: 90%;
-            max-width: 800px;
+            width: 100%;
             background-color: #fff;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
         }
+
         table th, table td {
             padding: 10px;
             text-align: left;
             border: 1px solid #ddd;
         }
+
         table th {
-            background-color: #007BFF;
+            background-color: #ffd700;
             color: white;
         }
+
         table tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background-color: #f9f9f9;
         }
+
         .button-container {
             margin-top: 20px;
+            text-align: center;
         }
+
         .button-container button {
             background-color: #6c757d;
             color: white;
@@ -46,32 +70,46 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
+
         .button-container button:hover {
             background-color: #5a6268;
+        }
+
+        @media (max-width: 600px) {
+            table th, table td {
+                font-size: 14px;
+            }
+
+            .button-container button {
+                font-size: 14px;
+                padding: 8px 15px;
+            }
         }
     </style>
 </head>
 <body>
-<h2>Visualizar Fornecedores</h2>
-<table>
-    <thead>
-    <tr>
-        <th>CNPJ</th>
-        <th>Nome da Empresa</th>
-        <th>Telefone</th>
-        <th>Email</th>
-        <th>Rua</th>
-        <th>Bairro</th>
-        <th>Cidade</th>
-        <th>CEP</th>
-    </tr>
-    </thead>
-    <tbody id="fornecedor-tbody">
-    <!-- Linhas serão preenchidas dinamicamente -->
-    </tbody>
-</table>
-<div class="button-container">
-    <button onclick="history.back()">Voltar</button>
+<div class="container">
+    <h2>Visualizar Fornecedores</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>CNPJ</th>
+            <th>Nome da Empresa</th>
+            <th>Telefone</th>
+            <th>Email</th>
+            <th>Rua</th>
+            <th>Bairro</th>
+            <th>Cidade</th>
+            <th>CEP</th>
+        </tr>
+        </thead>
+        <tbody id="fornecedor-tbody">
+        <!-- Linhas serão preenchidas dinamicamente -->
+        </tbody>
+    </table>
+    <div class="button-container">
+        <button onclick="history.back()">Voltar</button>
+    </div>
 </div>
 
 <script>
@@ -92,15 +130,15 @@
             fornecedores.forEach(fornecedor => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${fornecedor.cnpj || 'N/A'}</td>
-                    <td>${fornecedor.nomeEmpresa || 'N/A'}</td>
-                    <td>${fornecedor.telefone || 'N/A'}</td>
-                    <td>${fornecedor.email || 'N/A'}</td>
-                    <td>${fornecedor.rua || 'N/A'}</td>
-                    <td>${fornecedor.bairro || 'N/A'}</td>
-                    <td>${fornecedor.cidade || 'N/A'}</td>
-                    <td>${fornecedor.cep || 'N/A'}</td>
-                `;
+                        <td>${fornecedor.cnpj || 'N/A'}</td>
+                        <td>${fornecedor.nomeEmpresa || 'N/A'}</td>
+                        <td>${fornecedor.telefone || 'N/A'}</td>
+                        <td>${fornecedor.email || 'N/A'}</td>
+                        <td>${fornecedor.rua || 'N/A'}</td>
+                        <td>${fornecedor.bairro || 'N/A'}</td>
+                        <td>${fornecedor.cidade || 'N/A'}</td>
+                        <td>${fornecedor.cep || 'N/A'}</td>
+                    `;
                 tbody.appendChild(tr);
             });
         } catch (error) {

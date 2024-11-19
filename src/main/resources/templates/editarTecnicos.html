@@ -7,110 +7,151 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
             margin: 0;
-            padding: 20px;
-            background-color: #f9f9f9;
+            padding: 0;
+            background: linear-gradient(to bottom, #8a2be2, #ffffff);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
-        h2 { color: #333; }
-        form {
-            display: inline-block;
-            text-align: left;
+
+        .container {
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
         }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
         label {
-            display: block;
             margin: 10px 0 5px;
+            font-weight: bold;
+            color: #333;
         }
-        input, button {
-            width: 100%;
+
+        input, button, table {
             padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
         }
+
         button {
-            background-color: #007BFF;
-            color: white;
             cursor: pointer;
         }
-        button:hover { background-color: #0056b3; }
-        .button-container { text-align: center; margin-top: 10px; }
+
+        button[type="submit"] {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        button[type="button"] {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        button[type="button"]:hover {
+            background-color: #5a6268;
+        }
+
         table {
             margin: 20px auto;
             border-collapse: collapse;
             width: 100%;
-            max-width: 400px;
             background-color: #fff;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
         }
+
         table th, table td {
             padding: 10px;
             text-align: left;
             border: 1px solid #ddd;
         }
+
         table th {
-            background-color: #007BFF;
+            background-color: #8a2be2;
             color: white;
         }
+
         table tr:nth-child(even) {
             background-color: #f2f2f2;
+        }
+
+        @media (max-width: 600px) {
+            input, button, table th, table td {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body>
-<h2>Editar Técnico</h2>
-<form id="form-editar-tecnico">
-    <label for="idTecnico">ID do Técnico:</label>
-    <input type="number" id="idTecnico" name="idTecnico" required placeholder="Digite o ID do Técnico">
+<div class="container">
+    <h2>Editar Técnico</h2>
+    <form id="form-editar-tecnico">
+        <label for="idTecnico">ID do Técnico:</label>
+        <input type="number" id="idTecnico" name="idTecnico" required placeholder="Digite o ID do Técnico">
 
-    <table id="tecnicos-tabela">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nome</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Dados serão preenchidos dinamicamente -->
-        </tbody>
-    </table>
+        <table id="tecnicos-tabela">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Dados serão preenchidos dinamicamente -->
+            </tbody>
+        </table>
 
-    <label for="nome">Nome:</label>
-    <input type="text" id="nome" name="nome" placeholder="Novo Nome">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" placeholder="Novo Nome">
 
-    <label for="telefone">Telefone:</label>
-    <input type="text" id="telefone" name="telefone" placeholder="Novo Telefone">
+        <label for="telefone">Telefone:</label>
+        <input type="text" id="telefone" name="telefone" placeholder="Novo Telefone">
 
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" placeholder="Novo Email">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Novo Email">
 
-    <label for="idInstalacao">ID da Instalação:</label>
-    <input type="number" id="idInstalacao" name="idInstalacao" placeholder="Novo ID da Instalação">
+        <label for="idInstalacao">ID da Instalação:</label>
+        <input type="number" id="idInstalacao" name="idInstalacao" placeholder="Novo ID da Instalação">
 
-    <table id="instalacoes-tabela">
-        <thead>
-        <tr>
-            <th>ID</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Dados serão preenchidos dinamicamente -->
-        </tbody>
-    </table>
+        <table id="instalacoes-tabela">
+            <thead>
+            <tr>
+                <th>ID</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Dados serão preenchidos dinamicamente -->
+            </tbody>
+        </table>
 
-    <button type="submit">Salvar Alterações</button>
-    <div class="button-container">
-        <button type="button" onclick="history.back()">Voltar</button>
-    </div>
-</form>
+        <button type="submit">Salvar Alterações</button>
+        <div class="button-container">
+            <button type="button" onclick="history.back()">Voltar</button>
+        </div>
+    </form>
+</div>
 
 <script>
     async function carregarTecnicos() {
@@ -121,12 +162,14 @@
             const tecnicos = await response.json();
             const tabelaBody = document.querySelector('#tecnicos-tabela tbody');
 
+            tabelaBody.innerHTML = ""; // Limpa a tabela antes de adicionar os dados
+
             tecnicos.forEach(tecnico => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${tecnico.idTecnico}</td>
-                    <td>${tecnico.nome}</td>
-                `;
+                        <td>${tecnico.idTecnico}</td>
+                        <td>${tecnico.nome}</td>
+                    `;
                 tabelaBody.appendChild(row);
             });
         } catch (error) {
@@ -142,11 +185,13 @@
             const instalacoes = await response.json();
             const tabelaBody = document.querySelector('#instalacoes-tabela tbody');
 
+            tabelaBody.innerHTML = ""; // Limpa a tabela antes de adicionar os dados
+
             instalacoes.forEach(instalacao => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${instalacao.idInstalacao}</td>
-                `;
+                        <td>${instalacao.idInstalacao}</td>
+                    `;
                 tabelaBody.appendChild(row);
             });
         } catch (error) {

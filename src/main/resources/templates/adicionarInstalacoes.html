@@ -5,47 +5,134 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar Instalação</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 20px; background-color: #f9f9f9; }
-        h2 { color: #333; }
-        form {
-            display: inline-block;
-            text-align: left;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #a8e063, #ffffff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
         }
-        label { display: block; margin: 10px 0 5px; }
+
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
         input, textarea, button {
-            width: 100%;
             padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
         }
+
         button {
-            background-color: #007BFF;
-            color: white;
             cursor: pointer;
         }
-        button:hover { background-color: #0056b3; }
+
+        button[type="button"] {
+            background-color: #b3b3b3;
+            color: #fff;
+        }
+
+        button[type="button"]:hover {
+            background-color: #8c8c8c;
+        }
+
+        button[type="submit"] {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+                padding: 15px;
+            }
+
+            input, textarea, button {
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
-<h2>Adicionar Instalação</h2>
-<form action="/adicionar_instalacao" method="POST">
-    <label for="idInstalacao">ID da Instalação:</label>
-    <input type="number" id="idInstalacao" name="idInstalacao" required>
+<div class="container">
+    <h2>Adicionar Instalação</h2>
+    <form id="instalacaoForm">
+        <label for="idInstalacao">ID da Instalação:</label>
+        <input type="number" id="idInstalacao" name="idInstalacao" required>
 
-    <label for="detalhes">Detalhes do Serviço:</label>
-    <textarea id="detalhes" name="detalhes" rows="4" required></textarea>
+        <label for="comentarioServico">Comentário do Serviço:</label>
+        <textarea id="comentarioServico" name="comentarioServico" rows="4" required></textarea>
 
-    <label for="data">Data de Instalação:</label>
-    <input type="date" id="data" name="data" required>
+        <label for="dataInstalacao">Data de Instalação (AAAAMMDD):</label>
+        <input type="text" id="dataInstalacao" name="dataInstalacao" pattern="\d{8}" placeholder="Ex: 21011201" required>
 
-    <button type="submit">Adicionar</button>
-    <button type="button" onclick="history.back()">Voltar</button>
-</form>
+        <button type="submit" onclick="adicionarInstalacao()">Adicionar</button>
+        <button type="button" onclick="history.back()">Voltar</button>
+    </form>
+</div>
+
+<script>
+    async function adicionarInstalacao() {
+        const idInstalacao = document.getElementById("idInstalacao").value;
+        const comentarioServico = document.getElementById("comentarioServico").value;
+        const dataInstalacao = document.getElementById("dataInstalacao").value;
+
+        const instalacao = {
+            idInstalacao: parseInt(idInstalacao),
+            comentarioServico: comentarioServico,
+            dataInstalacao: dataInstalacao
+        };
+
+        try {
+            const response = await fetch("http://localhost:8080/instalacoes", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(instalacao)
+            });
+
+            if (response.ok) {
+                alert("Instalação adicionada com sucesso!");
+                document.getElementById("instalacaoForm").reset();
+            } else {
+                const error = await response.json();
+                alert("Erro ao adicionar instalação: " + error.message);
+            }
+        } catch (error) {
+            alert("Erro ao conectar ao servidor: " + error.message);
+        }
+    }
+</script>
 </body>
 </html>

@@ -5,57 +5,124 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Adicionar Placa Solar</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 20px; background-color: #f9f9f9; }
-    h2 { color: #333; }
-    form {
-      display: inline-block;
-      text-align: left;
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #d3d3d3, #ffffff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
       background-color: #fff;
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 500px;
+      box-sizing: border-box;
     }
-    label { display: block; margin: 10px 0 5px; }
-    input, button {
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin: 10px 0 5px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input {
       width: 100%;
       padding: 10px;
       margin-bottom: 15px;
       border: 1px solid #ccc;
       border-radius: 5px;
       font-size: 16px;
+      box-sizing: border-box;
     }
+
     button {
-      background-color: #007BFF;
-      color: white;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
       cursor: pointer;
     }
-    button:hover { background-color: #0056b3; }
+
+    button[type="submit"] {
+      background-color: #007BFF;
+      color: white;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    button[type="button"] {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    button[type="button"]:hover {
+      background-color: #5a6268;
+    }
+
+    @media (max-width: 600px) {
+      h2 {
+        font-size: 18px;
+      }
+
+      input, button {
+        font-size: 14px;
+        padding: 8px;
+      }
+
+      .container {
+        padding: 15px;
+      }
+    }
   </style>
 </head>
 <body>
-<h2>Adicionar Placa Solar</h2>
-<form id="form-adicionar-placa">
-  <label for="idPlaca">ID da Placa:</label>
-  <input type="number" id="idPlaca" name="idPlaca" required>
+<div class="container">
+  <h2>Adicionar Placa Solar</h2>
+  <form id="form-adicionar-placa">
+    <label for="idPlaca">ID da Placa:</label>
+    <input type="number" id="idPlaca" name="idPlaca" required>
 
-  <label for="prazoGarantia">Prazo de Garantia:</label>
-  <input type="text" id="prazoGarantia" name="prazoGarantia" required>
+    <label for="prazoGarantia">Prazo de Garantia:</label>
+    <input type="text" id="prazoGarantia" name="prazoGarantia" required>
 
-  <label for="potenciaPlaca">Potência da Placa:</label>
-  <input type="text" id="potenciaPlaca" name="potenciaPlaca" required>
+    <label for="potenciaPlaca">Potência da Placa:</label>
+    <input type="text" id="potenciaPlaca" name="potenciaPlaca" required>
 
-  <label for="quantidadePlacas">Quantidade de Placas:</label>
-  <input type="number" id="quantidadePlacas" name="quantidadePlacas" required>
+    <label for="quantidadePlacas">Quantidade de Placas:</label>
+    <input type="number" id="quantidadePlacas" name="quantidadePlacas" required>
 
-  <label for="idInstalacao">ID da Instalação:</label>
-  <input type="number" id="idInstalacao" name="idInstalacao" required>
+    <label for="idInstalacao">ID da Instalação:</label>
+    <input type="number" id="idInstalacao" name="idInstalacao" required>
 
-  <label for="cnpjFornecedor">CNPJ do Fornecedor:</label>
-  <input type="text" id="cnpjFornecedor" name="cnpjFornecedor" required>
+    <label for="cnpjFornecedor">CNPJ do Fornecedor:</label>
+    <input type="text" id="cnpjFornecedor" name="cnpjFornecedor" required>
 
-  <button type="submit">Adicionar</button>
-  <button type="button" onclick="history.back()">Voltar</button>
-</form>
+    <button type="submit">Adicionar</button>
+    <button type="button" onclick="history.back()">Voltar</button>
+  </form>
+</div>
 
 <script>
   document.getElementById('form-adicionar-placa').addEventListener('submit', async (event) => {

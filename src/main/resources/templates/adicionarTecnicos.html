@@ -5,54 +5,139 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Adicionar Técnico</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 20px; background-color: #f9f9f9; }
-    h2 { color: #333; }
-    form {
-      display: inline-block;
-      text-align: left;
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #8a2be2, #ffffff);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
       background-color: #fff;
-      padding: 20px;
+      padding: 15px;
       border-radius: 10px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
     }
-    label { display: block; margin: 10px 0 5px; }
-    input, button {
-      width: 100%;
-      padding: 10px;
+
+    h2 {
+      color: #333;
       margin-bottom: 15px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin: 10px 0 5px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input, button, table {
+      padding: 10px;
+      margin-bottom: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;
-      font-size: 16px;
+      font-size: 14px;
     }
+
     button {
-      background-color: #007BFF;
-      color: white;
       cursor: pointer;
     }
-    button:hover { background-color: #0056b3; }
+
+    button[type="submit"] {
+      background-color: #007BFF;
+      color: white;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    button[type="button"] {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    button[type="button"]:hover {
+      background-color: #5a6268;
+    }
+
+    table {
+      margin: 10px auto;
+      border-collapse: collapse;
+      width: 100%;
+      background-color: #fff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    table th, table td {
+      padding: 8px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+
+    table th {
+      background-color: #8a2be2;
+      color: white;
+    }
+
+    table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    @media (max-width: 600px) {
+      input, button, table th, table td {
+        font-size: 12px;
+      }
+    }
   </style>
 </head>
 <body>
-<h2>Adicionar Técnico</h2>
-<form id="form-adicionar-tecnico">
-  <label for="idTecnico">ID do Técnico:</label>
-  <input type="number" id="idTecnico" name="idTecnico" required>
+<div class="container">
+  <h2>Adicionar Técnico</h2>
+  <form id="form-adicionar-tecnico">
+    <label for="idTecnico">ID do Técnico:</label>
+    <input type="number" id="idTecnico" name="idTecnico" required>
 
-  <label for="nome">Nome:</label>
-  <input type="text" id="nome" name="nome" required>
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" required>
 
-  <label for="telefone">Telefone:</label>
-  <input type="text" id="telefone" name="telefone" required>
+    <label for="telefone">Telefone:</label>
+    <input type="text" id="telefone" name="telefone" required>
 
-  <label for="email">Email:</label>
-  <input type="email" id="email" name="email" required>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
 
-  <label for="idInstalacao">ID da Instalação:</label>
-  <input type="number" id="idInstalacao" name="idInstalacao" required>
+    <label for="idInstalacao">ID da Instalação:</label>
+    <input type="number" id="idInstalacao" name="idInstalacao" required>
 
-  <button type="submit">Adicionar</button>
-  <button type="button" onclick="history.back()">Voltar</button>
-</form>
+    <table id="instalacoes-tabela">
+      <thead>
+      <tr>
+        <th>ID das Instalações</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- Dados serão preenchidos dinamicamente -->
+      </tbody>
+    </table>
+
+    <button type="submit">Adicionar</button>
+    <button type="button" onclick="history.back()">Voltar</button>
+  </form>
+</div>
 
 <script>
   document.getElementById('form-adicionar-tecnico').addEventListener('submit', async (event) => {
@@ -78,6 +163,7 @@
       if (response.ok) {
         alert('Técnico adicionado com sucesso!');
         document.getElementById('form-adicionar-tecnico').reset(); // Limpa o formulário
+        carregarInstalacoes(); // Atualiza a tabela
       } else {
         alert('Erro ao adicionar técnico. Verifique os dados e tente novamente.');
       }
@@ -86,6 +172,29 @@
       alert('Não foi possível conectar ao servidor.');
     }
   });
+
+  async function carregarInstalacoes() {
+    try {
+      const response = await fetch('http://localhost:8080/instalacoes');
+      if (!response.ok) throw new Error('Erro ao carregar instalações.');
+
+      const instalacoes = await response.json();
+      const tabelaBody = document.querySelector('#instalacoes-tabela tbody');
+
+      tabelaBody.innerHTML = ""; // Limpa a tabela antes de adicionar os dados
+
+      instalacoes.forEach(instalacao => {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${instalacao.idInstalacao}</td>`;
+        tabelaBody.appendChild(row);
+      });
+    } catch (error) {
+      console.error('Erro ao carregar instalações:', error);
+    }
+  }
+
+  // Carrega os IDs das instalações ao abrir a página
+  carregarInstalacoes();
 </script>
 </body>
 </html>

@@ -5,40 +5,182 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Remover Instalação</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 20px; background-color: #f9f9f9; }
-        h2 { color: #333; }
-        form {
-            display: inline-block;
-            text-align: left;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #ff6f61, #ffffff);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
         }
-        label { display: block; margin: 10px 0 5px; }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        label {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
         input, button {
-            width: 100%;
             padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
         }
+
         button {
-            background-color: #DC3545;
-            color: white;
             cursor: pointer;
         }
-        button:hover { background-color: #c82333; }
+
+        button[type="submit"] {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #c82333;
+        }
+
+        button[type="button"] {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        button[type="button"]:hover {
+            background-color: #5a6268;
+        }
+
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        @media (max-width: 600px) {
+            input, button {
+                font-size: 14px;
+                padding: 8px;
+            }
+
+            table th, table td {
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
-<h2>Remover Instalação</h2>
-<form action="/remover_instalacao" method="POST">
-    <label for="idInstalacao">ID da Instalação:</label>
-    <input type="number" id="idInstalacao" name="idInstalacao" required>
-    <button type="submit">Remover</button>
-    <button type="button" onclick="history.back()">Voltar</button>
-</form>
+<div class="container">
+    <h2>Remover Instalação</h2>
+    <form id="removerInstalacaoForm">
+        <label for="idInstalacao">ID da Instalação:</label>
+        <input type="number" id="idInstalacao" name="idInstalacao" required>
+        <button type="submit" onclick="removerInstalacao()">Remover</button>
+        <button type="button" onclick="history.back()">Voltar</button>
+    </form>
+    <h2>IDs de Instalações Atuais</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>ID da Instalação</th>
+        </tr>
+        </thead>
+        <tbody id="instalacoesTableBody">
+        <!-- Dados serão preenchidos dinamicamente -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    async function carregarInstalacoes() {
+        try {
+            const response = await fetch("http://localhost:8080/instalacoes");
+            if (!response.ok) {
+                throw new Error("Erro ao buscar instalações");
+            }
+
+            const instalacoes = await response.json();
+            const tableBody = document.getElementById("instalacoesTableBody");
+
+            // Limpa a tabela antes de adicionar os dados
+            tableBody.innerHTML = "";
+
+            // Preenche a tabela com os IDs das instalações
+            instalacoes.forEach(instalacao => {
+                const row = document.createElement("tr");
+                row.innerHTML = `<td>${instalacao.idInstalacao}</td>`;
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            alert("Erro ao carregar instalações: " + error.message);
+        }
+    }
+
+    async function removerInstalacao() {
+        const idInstalacao = document.getElementById("idInstalacao").value;
+
+        try {
+            const response = await fetch(`http://localhost:8080/instalacoes/${idInstalacao}`, {
+                method: "DELETE"
+            });
+
+            if (response.ok) {
+                alert("Instalação removida com sucesso!");
+                carregarInstalacoes(); // Atualiza a lista de IDs
+                document.getElementById("removerInstalacaoForm").reset();
+            } else {
+                const error = await response.json();
+                alert("Erro ao remover instalação: " + error.message);
+            }
+        } catch (error) {
+            alert("Erro ao conectar ao servidor: " + error.message);
+        }
+    }
+
+    // Carrega os IDs das instalações ao abrir a página
+    carregarInstalacoes();
+</script>
 </body>
 </html>

@@ -7,12 +7,21 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
             margin: 0;
-            padding: 20px;
-            background-color: #f9f9f9;
+            padding: 0;
+            background: linear-gradient(to bottom, #a8e063, #ffffff);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
-        h2 { color: #333; }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
         table {
             margin: 20px auto;
             border-collapse: collapse;
@@ -22,21 +31,26 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
         }
+
         table th, table td {
             padding: 10px;
             text-align: left;
             border: 1px solid #ddd;
         }
+
         table th {
             background-color: #007BFF;
             color: white;
         }
+
         table tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+
         .button-container {
             margin-top: 20px;
         }
+
         .button-container button {
             background-color: #6c757d;
             color: white;
@@ -46,8 +60,20 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
+
         .button-container button:hover {
             background-color: #5a6268;
+        }
+
+        @media (max-width: 600px) {
+            table th, table td {
+                font-size: 14px;
+            }
+
+            .button-container button {
+                font-size: 14px;
+                padding: 8px 15px;
+            }
         }
     </style>
 </head>
@@ -61,17 +87,45 @@
         <th>Data de Instalação</th>
     </tr>
     </thead>
-    <tbody>
+    <tbody id="instalacoesTableBody">
     <!-- Dados serão preenchidos dinamicamente -->
-    <tr>
-        <td>1</td>
-        <td>Instalação de painéis solares residenciais</td>
-        <td>2024-11-20</td>
-    </tr>
     </tbody>
 </table>
 <div class="button-container">
     <button onclick="history.back()">Voltar</button>
 </div>
+
+<script>
+    async function carregarInstalacoes() {
+        try {
+            const response = await fetch("http://localhost:8080/instalacoes");
+            if (!response.ok) {
+                throw new Error("Erro ao buscar instalações");
+            }
+
+            const instalacoes = await response.json();
+            const tableBody = document.getElementById("instalacoesTableBody");
+
+            // Limpa a tabela antes de adicionar os dados
+            tableBody.innerHTML = "";
+
+            // Preenche a tabela com os dados das instalações
+            instalacoes.forEach(instalacao => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                        <td>${instalacao.idInstalacao}</td>
+                        <td>${instalacao.comentarioServico}</td>
+                        <td>${instalacao.dataInstalacao}</td>
+                    `;
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            alert("Erro ao carregar instalações: " + error.message);
+        }
+    }
+
+    // Carrega as instalações ao abrir a página
+    carregarInstalacoes();
+</script>
 </body>
 </html>

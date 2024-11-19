@@ -7,123 +7,176 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
             margin: 0;
-            padding: 20px;
-            background-color: #f9f9f9;
+            padding: 0;
+            background: linear-gradient(to bottom, #d3d3d3, #ffffff);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
-        h2 { color: #333; }
-        form {
-            display: inline-block;
-            text-align: left;
+
+        .container {
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
+            width: 90%;
+            max-width: 600px;
+            box-sizing: border-box;
         }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
         label {
-            display: block;
             margin: 10px 0 5px;
+            font-weight: bold;
+            color: #333;
         }
-        input, select, button {
+
+        input {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
+            box-sizing: border-box;
         }
+
         button {
-            background-color: #007BFF;
-            color: white;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
             cursor: pointer;
         }
-        button:hover { background-color: #0056b3; }
+
+        button[type="submit"] {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        button[type="button"] {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        button[type="button"]:hover {
+            background-color: #5a6268;
+        }
+
         table {
             margin: 20px auto;
             border-collapse: collapse;
             width: 100%;
-            max-width: 400px;
             background-color: #fff;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
+
         table th, table td {
             padding: 10px;
             text-align: left;
             border: 1px solid #ddd;
         }
+
         table th {
             background-color: #007BFF;
             color: white;
         }
+
         table tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background-color: #f9f9f9;
         }
-        .button-container { text-align: center; margin-top: 10px; }
+
+        @media (max-width: 600px) {
+            input, button, table th, table td {
+                font-size: 14px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
-<h2>Editar Placa Solar</h2>
-<form id="form-editar-placa">
-    <label for="idPlaca">ID da Placa:</label>
-    <input type="number" id="idPlaca" name="idPlaca" required placeholder="Digite o ID da Placa">
+<div class="container">
+    <h2>Editar Placa Solar</h2>
+    <form id="form-editar-placa">
+        <label for="idPlaca">ID da Placa:</label>
+        <input type="number" id="idPlaca" name="idPlaca" required placeholder="Digite o ID da Placa">
 
-    <table id="placas-tabela">
-        <thead>
-        <tr>
-            <th>ID da Placa</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Dados preenchidos dinamicamente -->
-        </tbody>
-    </table>
+        <table id="placas-tabela">
+            <thead>
+            <tr>
+                <th>ID da Placa</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Dados preenchidos dinamicamente -->
+            </tbody>
+        </table>
 
-    <label for="potenciaPlaca">Potência da Placa:</label>
-    <input type="text" id="potenciaPlaca" name="potenciaPlaca" placeholder="Nova Potência da Placa">
+        <label for="potenciaPlaca">Potência da Placa:</label>
+        <input type="text" id="potenciaPlaca" name="potenciaPlaca" placeholder="Nova Potência da Placa">
 
-    <label for="qtdPlacas">Quantidade de Placas:</label>
-    <input type="number" id="qtdPlacas" name="qtdPlacas" placeholder="Nova Quantidade">
+        <label for="qtdPlacas">Quantidade de Placas:</label>
+        <input type="number" id="qtdPlacas" name="qtdPlacas" placeholder="Nova Quantidade">
 
-    <label for="prazoGarantia">Prazo de Garantia:</label>
-    <input type="text" id="prazoGarantia" name="prazoGarantia" placeholder="Novo Prazo de Garantia">
+        <label for="prazoGarantia">Prazo de Garantia:</label>
+        <input type="text" id="prazoGarantia" name="prazoGarantia" placeholder="Novo Prazo de Garantia">
 
-    <label for="instalacaoId">ID da Instalação:</label>
-    <input type="number" id="instalacaoId" name="instalacaoId" placeholder="Novo ID da Instalação">
+        <label for="instalacaoId">ID da Instalação:</label>
+        <input type="number" id="instalacaoId" name="instalacaoId" placeholder="Novo ID da Instalação">
 
-    <table id="instalacoes-tabela">
-        <thead>
-        <tr>
-            <th>ID da Instalação</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Dados preenchidos dinamicamente -->
-        </tbody>
-    </table>
+        <table id="instalacoes-tabela">
+            <thead>
+            <tr>
+                <th>ID da Instalação</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Dados preenchidos dinamicamente -->
+            </tbody>
+        </table>
 
-    <label for="fornecedorCnpj">CNPJ do Fornecedor:</label>
-    <input type="text" id="fornecedorCnpj" name="fornecedorCnpj" maxlength="14" placeholder="Novo CNPJ do Fornecedor">
+        <label for="fornecedorCnpj">CNPJ do Fornecedor:</label>
+        <input type="text" id="fornecedorCnpj" name="fornecedorCnpj" maxlength="14" placeholder="Novo CNPJ do Fornecedor">
 
-    <table id="fornecedores-tabela">
-        <thead>
-        <tr>
-            <th>CNPJ</th>
-            <th>Nome</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Dados preenchidos dinamicamente -->
-        </tbody>
-    </table>
+        <table id="fornecedores-tabela">
+            <thead>
+            <tr>
+                <th>CNPJ</th>
+                <th>Nome</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Dados preenchidos dinamicamente -->
+            </tbody>
+        </table>
 
-    <button type="submit">Salvar Alterações</button>
-    <div class="button-container">
+        <button type="submit">Salvar Alterações</button>
         <button type="button" onclick="history.back()">Voltar</button>
-    </div>
-</form>
+    </form>
+</div>
 
 <script>
     async function carregarPlacas() {
