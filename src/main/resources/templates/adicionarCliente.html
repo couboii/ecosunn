@@ -8,12 +8,12 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 20px 0; /* Espaço no topo e no final */
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
             background: linear-gradient(to bottom, #87CEFA, #ffffff);
+            min-height: 100vh; /* Garante que o conteúdo ocupe ao menos toda a altura */
+            overflow-y: auto; /* Habilita rolagem caso necessário */
         }
         form {
             background-color: #fff;
