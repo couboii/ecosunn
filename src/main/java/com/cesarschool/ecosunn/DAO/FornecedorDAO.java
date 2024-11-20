@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class FornecedorDAO {
@@ -44,4 +45,12 @@ public class FornecedorDAO {
         String sql = "DELETE FROM Fornecedor WHERE CNPJ = ?";
         jdbcTemplate.update(sql, cnpj);
     }
+    public int contarFornecedoresRegistrados() {
+        String sql = "SELECT COUNT(*) FROM Fornecedor";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+
+
+
 }

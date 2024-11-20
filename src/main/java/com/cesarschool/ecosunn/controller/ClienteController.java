@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/clientes")
@@ -65,5 +66,11 @@ public class ClienteController {
         List<Cliente> clientes = clienteService.getAllClientes();
         return ResponseEntity.ok(clientes);
     }
+    @GetMapping("/cidades/clientes")
+    public ResponseEntity<List<Map<String, Object>>> listarClientesPorCidade() {
+        List<Map<String, Object>> clientesPorCidade = clienteService.getClientesPorCidade();
+        return ResponseEntity.ok(clientesPorCidade);
+    }
+
 }
 

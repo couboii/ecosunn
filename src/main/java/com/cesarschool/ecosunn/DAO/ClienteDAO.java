@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ClienteDAO {
@@ -87,4 +88,12 @@ public class ClienteDAO {
         String sql = "SELECT COUNT(*) FROM Cliente WHERE CNPJ IS NOT NULL AND CPF IS NULL";
         return jdbcTemplate.queryForObject(sql, Long.class);
     }
+    public List<Map<String, Object>> contarClientesPorCidade() {
+        String sql = "SELECT cidade, COUNT(*) AS quantidade_clientes " +
+                "FROM Clientes " +
+                "GROUP BY cidade " +
+                "ORDER BY quantidade_clientes DESC";
+        return jdbcTemplate.queryForList(sql);
+    }
+
 }

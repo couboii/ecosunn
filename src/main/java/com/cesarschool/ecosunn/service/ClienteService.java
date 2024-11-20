@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ClienteService {
@@ -69,6 +70,10 @@ public class ClienteService {
     public long countByCnpj() {
         return clienteDAO.countByCnpj();
     }
+    public List<Map<String, Object>> getClientesPorCidade() {
+        return clienteDAO.contarClientesPorCidade();
+    }
+
 
 
 

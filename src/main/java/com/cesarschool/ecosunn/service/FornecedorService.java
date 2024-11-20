@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class FornecedorService {
@@ -42,5 +43,12 @@ public class FornecedorService {
     public void deleteFornecedor(String cnpj) {
         fornecedorDAO.excluirFornecedor(cnpj);
     }
+    public int getTotalFornecedores() {
+        return fornecedorDAO.contarFornecedoresRegistrados();
+    }
+
+
+
+
 }
 
