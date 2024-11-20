@@ -3,21 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gráfico de Pizza - Técnicos por Instalação</title>
+    <title>Gráficos - Técnicos, Fornecedores e Clientes</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* Estilo geral do body */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #d4f1f9, #ffffff);
+            background: linear-gradient(to bottom, #d4f1f9, #d4f1f9); /* Mantém uma única cor */
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: flex-start;
             align-items: center;
-            height: 100vh;
+            padding: 20px;
+            gap: 20px; /* Espaçamento entre os gráficos */
         }
 
-        /* Contêiner central do gráfico */
+        /* Contêiner de cada gráfico */
         .chart-container {
             background: white;
             border-radius: 10px;
@@ -31,21 +33,18 @@
             max-width: 400px;
         }
 
-        /* Título dentro do contêiner */
         h1 {
             font-size: 18px;
             color: #333;
-            margin: 0 0 20px;
+            margin-bottom: 20px;
             text-align: center;
         }
 
-        /* Gráfico responsivo */
         canvas {
             max-width: 100%;
             height: auto;
         }
 
-        /* Botão voltar */
         button {
             margin-top: 20px;
             padding: 10px 20px;
@@ -64,13 +63,29 @@
     </style>
 </head>
 <body>
+<!-- Gráfico: Técnicos por Instalação -->
 <div class="chart-container">
     <h1>Técnicos por Instalação</h1>
     <canvas id="tecnicosChart"></canvas>
-    <button onclick="history.back()">Voltar</button>
 </div>
 
+<!-- Gráfico: Fornecedores Registrados -->
+<div class="chart-container">
+    <h1>Fornecedores Registrados</h1>
+    <canvas id="fornecedoresChart"></canvas>
+</div>
+
+<!-- Gráfico: Clientes por Cidade -->
+<div class="chart-container">
+    <h1>Clientes por Cidade</h1>
+    <canvas id="clientesChart"></canvas>
+</div>
+
+<!-- Botão Voltar -->
+<button onclick="history.back()">Voltar</button>
+
 <script>
+    // Gráfico: Técnicos por Instalação
     async function fetchTecnicosData() {
         try {
             const response = await fetch('http://localhost:8080/instalacoes/tecnicos/count');
@@ -126,8 +141,109 @@
         }
     }
 
-    // Chamar a função para buscar dados e renderizar o gráfico
+    // Gráfico: Fornecedores Registrados
+    async function fetchFornecedoresCount() {
+        try {
+            const response = await fetch('http://localhost:8080/fornecedores/contagem');
+            const total = await response.json();
+
+            // Criar o gráfico
+            const ctx = document.getElementById('fornecedoresChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Fornecedores Registrados'],
+                    datasets: [{
+                        label: 'Total',
+                        data: [total],
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                        title: {
+                            display: true,
+                            text: 'Fornecedores Registrados no Banco'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Erro ao buscar dados:', error);
+        }
+    }
+
+    // Gráfico: Clientes por Cidade
+    async function fetchClientesPorCidade() {
+        try {
+            const response = await fetch('http://localhost:8080/clientes/cidades/clientes');
+            const data = await response.json();
+
+            // Processar os dados para o gráfico
+            const labels = data.map(item => item.cidade);
+            const values = data.map(item => item.quantidade_clientes);
+
+            // Criar o gráfico
+            const ctx = document.getElementById('clientesChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Clientes por Cidade',
+                        data: values,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(153, 102, 255, 0.6)',
+                            'rgba(255, 159, 64, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Clientes Registrados por Cidade'
+                        }
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Erro ao buscar dados:', error);
+        }
+    }
+
+    // Chamar as funções para buscar dados e renderizar os gráficos
     fetchTecnicosData();
+    fetchFornecedoresCount();
+    fetchClientesPorCidade();
 </script>
 </body>
 </html>

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/fornecedores")
@@ -48,4 +49,13 @@ public class FornecedorController {
         fornecedorService.deleteFornecedor(cnpj);
         return ResponseEntity.ok("Fornecedor excluído com sucesso.");
     }
+    @GetMapping("/contagem")
+    public ResponseEntity<Integer> contarFornecedoresRegistrados() {
+        int totalFornecedores = fornecedorService.getTotalFornecedores();
+        return ResponseEntity.ok(totalFornecedores);
+    }
+
+
+
+
 }
