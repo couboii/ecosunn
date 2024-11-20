@@ -10,22 +10,28 @@
             margin: 0;
             padding: 0;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            background: linear-gradient(to bottom, #87CEFA, #ffffff);
+            background: linear-gradient(to bottom, #32CD32, #ffffff);
             min-height: 100vh;
         }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
         h1 {
-            margin-top: 20px;
+            margin-bottom: 20px;
             color: #007BFF;
         }
-        .button-container {
-            margin: 20px;
-            display: flex;
-            gap: 10px;
-        }
         button {
-            padding: 10px 20px;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
             border: none;
             border-radius: 5px;
             background-color: #007BFF;
@@ -37,23 +43,15 @@
         button:hover {
             background-color: #0056b3;
         }
-        .table-container {
-            width: 90%;
-            max-width: 800px;
-            margin: 20px auto;
-            overflow-x: auto;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            background-color: #ffffff;
-        }
         table {
             width: 100%;
             border-collapse: collapse;
+            margin: 20px 0;
         }
         th, td {
-            padding: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
             text-align: left;
-            border-bottom: 1px solid #ddd;
         }
         th {
             background-color: #007BFF;
@@ -65,37 +63,33 @@
     </style>
 </head>
 <body>
-<h1>Menu de Supervisores</h1>
-<div class="button-container">
-    <button onclick="window.location.href='adicionarSupervisores'">Adicionar Supervisor</button>
-    <button onclick="window.location.href='removerSupervisor'">Remover Supervisor</button>
-    <button type="button" onclick="history.back()">Voltar</button>
-</div>
 
-<div class="table-container">
-    <h2 style="text-align: center; color: #007BFF;">Supervisores e Supervisionados</h2>
+<div class="container">
+    <h1>Menu de Supervisores</h1>
     <table>
         <thead>
         <tr>
-            <th>Supervisor</th>
-            <th>Supervisionado</th>
+            <th>ID Supervisionado</th>
+            <th>ID Supervisor</th>
         </tr>
         </thead>
-        <tbody id="supervisoresTableBody">
-        <!-- Conteúdo será carregado dinamicamente -->
+        <tbody id="supervisoresTable">
+        <!-- Dados serão carregados dinamicamente -->
         </tbody>
     </table>
+    <button onclick="window.location.href='adicionarSupervisores'">Adicionar Supervisor</button>
+    <button type="button" onclick="history.back()">Voltar</button>
 </div>
 
 <script>
     async function carregarSupervisores() {
-        const tbody = document.getElementById('supervisoresTableBody');
-        tbody.innerHTML = ''; // Limpa a tabela antes de carregar os dados
+        const tabela = document.getElementById('supervisoresTable');
+        tabela.innerHTML = ''; // Limpa a tabela antes de carregar os dados
 
         try {
             const response = await fetch('http://localhost:8080/supervisores');
             if (!response.ok) {
-                throw new Error('Erro ao buscar os supervisores');
+                throw new Error('Erro ao carregar supervisores');
             }
 
             const supervisores = await response.json();
@@ -106,37 +100,36 @@
                 cell.textContent = 'Nenhum supervisor encontrado.';
                 cell.style.textAlign = 'center';
                 row.appendChild(cell);
-                tbody.appendChild(row);
+                tabela.appendChild(row);
                 return;
             }
 
-            supervisores.forEach(({ tecnicoId, supervisorId }) => {
+            supervisores.forEach(supervisor => {
                 const row = document.createElement('tr');
-
                 const supervisorCell = document.createElement('td');
-                supervisorCell.textContent = `${supervisorId}`;
-
+                supervisorCell.textContent = supervisor.supervisorId;
                 const supervisionadoCell = document.createElement('td');
-                supervisionadoCell.textContent = `${tecnicoId}`;
+                supervisionadoCell.textContent = supervisor.tecnicoId;
 
                 row.appendChild(supervisorCell);
                 row.appendChild(supervisionadoCell);
-                tbody.appendChild(row);
+                tabela.appendChild(row);
             });
         } catch (error) {
-            console.error('Erro:', error);
+            console.error(error);
             const row = document.createElement('tr');
             const cell = document.createElement('td');
             cell.colSpan = 2;
-            cell.textContent = 'Erro ao carregar os supervisores.';
+            cell.textContent = 'Erro ao carregar supervisores.';
             cell.style.textAlign = 'center';
             row.appendChild(cell);
-            tbody.appendChild(row);
+            tabela.appendChild(row);
         }
     }
 
     // Carrega os supervisores ao abrir a página
     document.addEventListener('DOMContentLoaded', carregarSupervisores);
 </script>
+
 </body>
 </html>

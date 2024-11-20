@@ -8,26 +8,42 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 20px;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(to bottom, #87CEFA, #ffffff);
+            align-items: flex-start;
+            background: linear-gradient(to bottom, #d3d3d3, #808080);
+            min-height: 100vh;
         }
-        form {
+        .container {
+            width: 80%;
+            max-width: 600px;
             background-color: #fff;
-            padding: 25px;
+            padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            width: 90%;
-            max-width: 400px;
-            text-align: left;
         }
         h2 {
             text-align: center;
             color: #007BFF;
             margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
         }
         label {
             display: block;
@@ -56,30 +72,66 @@
     </style>
 </head>
 <body>
-<form id="form-adicionar-supervisor">
+
+<div class="container">
     <h2>Adicionar Supervisor</h2>
-    <label for="tecnicoId">ID do Técnico Supervisor:</label>
-    <input type="number" id="tecnicoId" name="tecnicoId" required min="1">
 
-    <label for="supervisorId">ID do Técnico Supervisionado:</label>
-    <input type="number" id="supervisorId" name="supervisorId" required min="1">
+    <table id="tecnicos-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Os dados serão inseridos dinamicamente -->
+        </tbody>
+    </table>
 
-    <button type="submit">Adicionar</button>
-    <button type="button" onclick="history.back()">Voltar</button>
-</form>
+    <form id="form-adicionar-supervisor">
+        <label for="tecnicoId">ID do Técnico Supervisor:</label>
+        <input type="number" id="tecnicoId" name="tecnicoId" required min="1">
+
+        <label for="supervisorId">ID do Técnico Supervisionado:</label>
+        <input type="number" id="supervisorId" name="supervisorId" required min="1">
+
+        <button type="submit">Adicionar</button>
+        <button type="button" onclick="history.back()">Voltar</button>
+    </form>
+</div>
 
 <script>
+    // Função para carregar técnicos
+    async function carregarTecnicos() {
+        try {
+            const response = await fetch('http://localhost:8080/tecnicos'); // Endpoint para listar técnicos
+            if (response.ok) {
+                const tecnicos = await response.json();
+                const tabela = document.getElementById('tecnicos-table').querySelector('tbody');
+                tabela.innerHTML = ''; // Limpa a tabela antes de preencher
+
+                tecnicos.forEach(tecnico => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${tecnico.idTecnico}</td>
+                        <td>${tecnico.nome}</td>
+                    `;
+                    tabela.appendChild(row);
+                });
+            } else {
+                alert('Erro ao carregar técnicos.');
+            }
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('Não foi possível conectar ao servidor.');
+        }
+    }
+
     document.getElementById('form-adicionar-supervisor').addEventListener('submit', async (event) => {
         event.preventDefault();
 
         const tecnicoId = document.getElementById('tecnicoId').value;
         const supervisorId = document.getElementById('supervisorId').value;
-
-        // Validação básica
-        if (!tecnicoId || !supervisorId || tecnicoId <= 0 || supervisorId <= 0) {
-            alert('Por favor, insira IDs válidos.');
-            return;
-        }
 
         const supervisorData = { tecnicoId: parseInt(tecnicoId), supervisorId: parseInt(supervisorId) };
 
@@ -95,16 +147,18 @@
             if (response.ok) {
                 alert('Supervisor adicionado com sucesso!');
                 document.getElementById('form-adicionar-supervisor').reset();
-            } else if (response.status === 400) {
-                alert('Erro: Verifique os dados enviados.');
             } else {
-                alert('Erro ao adicionar supervisor. Tente novamente mais tarde.');
+                alert('Erro ao adicionar supervisor.');
             }
         } catch (error) {
             console.error('Erro:', error);
             alert('Não foi possível conectar ao servidor.');
         }
     });
+
+    // Carrega técnicos ao carregar a página
+    window.onload = carregarTecnicos;
 </script>
+
 </body>
 </html>

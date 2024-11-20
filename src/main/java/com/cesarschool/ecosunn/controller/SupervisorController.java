@@ -36,4 +36,7 @@ public class SupervisorController {
         supervisorService.deleteSupervisor(tecnicoId, supervisorId);
         return ResponseEntity.ok("Supervisor excluído com sucesso.");
     }
+
+
+
 }

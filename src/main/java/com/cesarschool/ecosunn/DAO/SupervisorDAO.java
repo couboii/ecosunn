@@ -32,4 +32,7 @@ public class SupervisorDAO {
         String sql = "DELETE FROM supervisor WHERE fk_Tecnico_ID_Tecnico = ? AND fk_Tecnico_ID_Tecnico_ = ?";
         jdbcTemplate.update(sql, tecnicoId, supervisorId);
     }
+
+
+
 }

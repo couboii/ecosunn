@@ -31,4 +31,5 @@ public class SupervisorService {
     public void deleteSupervisor(int tecnicoId, int supervisorId) {
         supervisorDAO.excluirSupervisor(tecnicoId, supervisorId);
     }
+
 }

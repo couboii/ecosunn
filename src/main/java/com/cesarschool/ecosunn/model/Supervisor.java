@@ -1,10 +1,20 @@
 package com.cesarschool.ecosunn.model;
 
 public class Supervisor {
-    private Integer tecnicoId;
-    private Integer supervisorId;
+    private Integer supervisorId; // ID do supervisor
+    private Integer tecnicoId;    // ID do supervisionado
+    private String nomeSupervisor;
+    private String nomeSupervisionado;
 
     // Getters e Setters
+    public Integer getSupervisorId() {
+        return supervisorId;
+    }
+
+    public void setSupervisorId(Integer supervisorId) {
+        this.supervisorId = supervisorId;
+    }
+
     public Integer getTecnicoId() {
         return tecnicoId;
     }
@@ -13,11 +23,19 @@ public class Supervisor {
         this.tecnicoId = tecnicoId;
     }
 
-    public Integer getSupervisorId() {
-        return supervisorId;
+    public String getNomeSupervisor() {
+        return nomeSupervisor;
     }
 
-    public void setSupervisorId(Integer supervisorId) {
-        this.supervisorId = supervisorId;
+    public void setNomeSupervisor(String nomeSupervisor) {
+        this.nomeSupervisor = nomeSupervisor;
+    }
+
+    public String getNomeSupervisionado() {
+        return nomeSupervisionado;
+    }
+
+    public void setNomeSupervisionado(String nomeSupervisionado) {
+        this.nomeSupervisionado = nomeSupervisionado;
     }
 }
