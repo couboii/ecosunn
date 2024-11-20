@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/instalacoes")
@@ -60,5 +61,11 @@ public class InstalacaoController {
         int count = instalacaoService.contarTecnicosPorInstalacao(id);
         return ResponseEntity.ok(count);
     }
+    @GetMapping("/tecnicos/count")
+    public ResponseEntity<List<Map<String, Object>>> contarTecnicosTodasInstalacoes() {
+        List<Map<String, Object>> counts = instalacaoService.contarTecnicosTodasInstalacoes();
+        return ResponseEntity.ok(counts);
+    }
+
 }
 

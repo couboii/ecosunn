@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class InstalacaoDAO {
@@ -52,4 +53,10 @@ public class InstalacaoDAO {
         String sql = "SELECT ContarTecnicosPorInstalacao(?)";
         return jdbcTemplate.queryForObject(sql, Integer.class, idInstalacao);
     }
+    public List<Map<String, Object>> contarTecnicosTodasInstalacoes() {
+        String sql = "SELECT ID_instalacao, ContarTecnicosPorInstalacao(ID_instalacao) AS count_tecnicos FROM Instalacao";
+        return jdbcTemplate.queryForList(sql);
+    }
+
+
 }

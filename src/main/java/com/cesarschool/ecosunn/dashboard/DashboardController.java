@@ -21,4 +21,5 @@ public class DashboardController {
     public ResponseEntity<Map<String, Long>> getTipoClientes() {
         return ResponseEntity.ok(dashboardService.contagemTipoClientes());
     }
+
 }

@@ -1,134 +1,133 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboards</title>
+    <title>Gráfico de Pizza - Técnicos por Instalação</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        /* Estilo geral do body */
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px;
-            background-color: #f9f9f9;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        .dashboard-container {
-            max-width: 800px;
-            margin: 20px auto;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
-        .dashboard-title {
-            font-size: 20px;
-            color: #007BFF;
-            margin-bottom: 10px;
-        }
-        .dashboard-space {
-            height: auto;
-            border: 2px dashed #ccc;
-            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #d4f1f9, #ffffff);
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Contêiner central do gráfico */
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        /* Título dentro do contêiner */
+        h1 {
+            font-size: 18px;
             color: #333;
-            font-size: 16px;
-            margin-bottom: 20px;
-            padding: 10px;
-        }
-        .back-button {
-            display: block;
-            margin: 20px auto;
+            margin: 0 0 20px;
             text-align: center;
-            background-color: #007BFF;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 16px;
-            width: 200px;
         }
-        .back-button:hover {
-            background-color: #0056b3;
+
+        /* Gráfico responsivo */
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Botão voltar */
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f0f0f0;
+            color: #333;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #e0e0e0;
         }
     </style>
 </head>
 <body>
-<h1>Dashboards</h1>
-
-<div class="dashboard-container">
-    <div class="dashboard-title">Dashboard 1: Distribuição por Tipo de Cliente (CPF x CNPJ)</div>
-    <div class="dashboard-space" id="tipo-clientes">Carregando gráfico...</div>
+<div class="chart-container">
+    <h1>Técnicos por Instalação</h1>
+    <canvas id="tecnicosChart"></canvas>
+    <button onclick="history.back()">Voltar</button>
 </div>
 
-<a href="javascript:history.back()" class="back-button">Voltar</a>
-
 <script>
-    // Função para buscar os dados de tipo de cliente e exibir o gráfico
-    async function fetchTipoClientes() {
+    async function fetchTecnicosData() {
         try {
-            const response = await fetch('http://localhost:8080/dashboard/tipo');
-            if (response.ok) {
-                const tiposClientes = await response.json();
-                console.log('Dados recebidos:', tiposClientes);
-                renderPieChart(tiposClientes);
-            } else {
-                console.error('Erro ao carregar dados:', response.status);
-                document.getElementById('tipo-clientes').textContent = 'Erro ao carregar dados.';
-            }
+            const response = await fetch('http://localhost:8080/instalacoes/tecnicos/count');
+            const data = await response.json();
+
+            // Processar os dados para o gráfico
+            const labels = data.map(item => `Instalação ${item.ID_instalacao}`);
+            const values = data.map(item => item.count_tecnicos);
+
+            // Criar o gráfico
+            const ctx = document.getElementById('tecnicosChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Técnicos por Instalação',
+                        data: values,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(153, 102, 255, 0.6)',
+                            'rgba(255, 159, 64, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Distribuição de Técnicos'
+                        }
+                    }
+                }
+            });
         } catch (error) {
-            console.error('Erro ao conectar ao servidor:', error);
-            document.getElementById('tipo-clientes').textContent = 'Erro ao conectar ao servidor.';
+            console.error('Erro ao buscar dados:', error);
         }
     }
 
-    // Função para renderizar gráfico de pizza
-    function renderPieChart(data) {
-        console.log('Criando gráfico com dados:', data);
-        const ctx = document.createElement('canvas');
-        const container = document.getElementById('tipo-clientes');
-        container.innerHTML = ''; // Limpa o conteúdo existente
-        container.appendChild(ctx);
-
-        new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: Object.keys(data),
-                datasets: [{
-                    data: Object.values(data),
-                    backgroundColor: ['#007BFF', '#28A745', '#FFC107', '#DC3545'],
-                    hoverBackgroundColor: ['#0056b3', '#1e7e34', '#e0a800', '#c82333']
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-    }
-
-    // Dados de teste (fallback)
-    document.addEventListener('DOMContentLoaded', function () {
-        // Ativando os dados reais
-        fetchTipoClientes();
-
-        // Ative isso para teste com dados fixos
-        const mockData = { CPF: 100, CNPJ: 50 };
-        renderPieChart(mockData);
-    });
+    // Chamar a função para buscar dados e renderizar o gráfico
+    fetchTecnicosData();
 </script>
-
-
-<!-- Adiciona a biblioteca Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
