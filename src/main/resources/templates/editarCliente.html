@@ -17,50 +17,59 @@
         }
         .container {
             background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            width: 90%;
-            max-width: 600px;
-            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            width: 85%;
+            max-width: 500px;
         }
         h2 {
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            text-align: center;
         }
         form {
-            text-align: left;
-            margin: auto;
+            margin-top: 15px;
         }
         label {
+            font-size: 14px;
+            margin-top: 10px;
             display: block;
-            margin: 10px 0 5px;
         }
         input, select, button {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
+            padding: 8px;
+            margin-top: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 16px;
+            font-size: 14px;
         }
         button {
             background-color: #007BFF;
             color: white;
+            border: none;
             cursor: pointer;
+            margin-top: 10px;
         }
         button:hover {
             background-color: #0056b3;
         }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .button-container button {
+            width: 48%;
+        }
         table {
-            margin: 20px auto;
+            margin-top: 20px;
             border-collapse: collapse;
             width: 100%;
-            background-color: #fff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         table th, table td {
-            padding: 10px;
+            font-size: 12px;
+            padding: 8px;
             text-align: left;
             border: 1px solid #ddd;
         }
@@ -71,13 +80,12 @@
         table tr:nth-child(even) {
             background-color: #f2f2f2;
         }
-        .button-container {
-            text-align: center;
-            margin-top: 10px;
-        }
-        @media (max-width: 600px) {
+        @media (max-width: 500px) {
             input, select, button {
-                font-size: 14px;
+                font-size: 12px;
+            }
+            table th, table td {
+                font-size: 11px;
             }
         }
     </style>
@@ -107,17 +115,8 @@
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" placeholder="Novo Email">
 
-        <label for="rua">Rua:</label>
-        <input type="text" id="rua" name="rua" placeholder="Nova Rua">
-
-        <label for="bairro">Bairro:</label>
-        <input type="text" id="bairro" name="bairro" placeholder="Novo Bairro">
-
         <label for="cidade">Cidade:</label>
         <input type="text" id="cidade" name="cidade" placeholder="Nova Cidade">
-
-        <label for="cep">CEP:</label>
-        <input type="text" id="cep" name="cep" placeholder="Novo CEP">
 
         <label for="telefone">Telefone:</label>
         <input type="text" id="telefone" name="telefone" placeholder="Novo Telefone">
@@ -129,8 +128,8 @@
             <option value="2">Tipo 2</option>
         </select>
 
-        <button type="submit">Salvar Alterações</button>
         <div class="button-container">
+            <button type="submit">Salvar</button>
             <button type="button" onclick="history.back()">Voltar</button>
         </div>
     </form>
@@ -144,6 +143,7 @@
 
             const clientes = await response.json();
             const tabelaBody = document.querySelector('#clientes-tabela tbody');
+            tabelaBody.innerHTML = ''; // Limpa tabela antes de preencher
 
             clientes.forEach(cliente => {
                 const row = document.createElement('tr');
@@ -165,10 +165,7 @@
             cpf: document.getElementById('cpf').value,
             nome: document.getElementById('nome').value || null,
             email: document.getElementById('email').value || null,
-            rua: document.getElementById('rua').value || null,
-            bairro: document.getElementById('bairro').value || null,
             cidade: document.getElementById('cidade').value || null,
-            cep: document.getElementById('cep').value || null,
             telefone: document.getElementById('telefone').value || null,
             tipo: document.getElementById('tipoCliente').value || null,
         };
