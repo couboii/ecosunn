@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adicionar Pedido</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(to bottom, #d1e7dd, #ffffff); /* Gradiente verde claro para branco */
+    }
+    form {
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 400px;
+      text-align: left;
+    }
+    h2 {
+      text-align: center;
+      color: #198754; /* Verde escuro */
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+    input, button {
+      width: calc(100% - 10px);
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #198754; /* Verde escuro */
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #146c43; /* Verde mais escuro */
+    }
+    button:last-of-type {
+      background-color: #6c757d;
+    }
+    button:last-of-type:hover {
+      background-color: #5a6268;
+    }
+  </style>
+</head>
+<body>
+<form id="form-adicionar-pedido">
+  <h2>Adicionar Pedido</h2>
+  <label for="idPagamento">ID Pagamento:</label>
+  <input type="number" id="idPagamento" name="idPagamento" required>
+
+  <label for="idInstalacao">ID Instalação:</label>
+  <input type="number" id="idInstalaacao" name="idInstalacao" required>
+
+  <label for="cpfCliente">CPF do Cliente:</label>
+  <input type="text" id="cpfCliente" name="cpfCliente" maxlength="11" placeholder="Opcional">
+
+  <label for="cnpjCliente">CNPJ do Cliente:</label>
+  <input type="text" id="cnpjCliente" name="cnpjCliente" maxlength="14" placeholder="Opcional">
+
+  <button type="submit">Adicionar</button>
+  <button type="button" onclick="history.back()">Voltar</button>
+</form>
+
+<script>
+  document.getElementById('form-adicionar-pedido').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const pedido = {
+      idPagamento: document.getElementById('idPagamento').value,
+      idInstalacao: document.getElementById('idInstalacao').value,
+      cpfCliente: document.getElementById('cpfCliente').value || null,
+      cnpjCliente: document.getElementById('cnpjCliente').value || null,
+    };
+
+    try {
+      const response = await fetch('http://localhost:8080/pedidos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(pedido),
+      });
+
+      if (response.ok) {
+        alert('Pedido adicionado com sucesso!');
+        document.getElementById('form-adicionar-pedido').reset();
+      } else {
+        alert('Erro ao adicionar pedido. Verifique os dados e tente novamente.');
+      }
+    } catch (error) {
+      console.error('Erro:', error);
+      alert('Não foi possível conectar ao servidor.');
+    }
+  });
+</script>
+</body>
+</html>

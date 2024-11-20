@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Forma de Pagamento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #87CEFA, #ffffff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input, button, .link-button {
+            width: calc(100% - 10px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .link-button {
+            display: inline-block;
+            text-align: center;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .link-button:hover {
+            background-color: #218838;
+        }
+
+        .button-spacing {
+            margin-top: 15px; /* Espaçamento extra entre botões */
+        }
+
+        @media (max-width: 600px) {
+            input, button, .link-button {
+                font-size: 14px;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Pagamento</h2>
+    <form id="form-pagamento">
+        <label for="idPagamento">ID do Pagamento:</label>
+        <input type="number" id="idPagamento" name="idPagamento" placeholder="Digite o ID do pagamento" required>
+
+        <label for="valorTotal">Valor Total:</label>
+        <input type="number" step="0.01" id="valorTotal" name="valorTotal" placeholder="Digite o valor total" required>
+
+        <label for="dataEmissao">Data de Emissão:</label>
+        <input type="date" id="dataEmissao" name="dataEmissao" required>
+
+        <button type="submit">Adicionar</button>
+        <a href="/fazerpedido" class="link-button button-spacing">Continuar</a>
+        <button type="button" onclick="history.back()" class="button-spacing">Voltar</button>
+    </form>
+
+    <div id="message" class="message"></div>
+</div>
+
+<script>
+    document.getElementById('form-pagamento').addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const formaPagamento = {
+            idPagamento: document.getElementById('idPagamento').value,
+            valorTotal: document.getElementById('valorTotal').value,
+            dataEmissao: document.getElementById('dataEmissao').value
+        };
+
+        try {
+            const response = await fetch('http://localhost:8080/formaspagamento', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formaPagamento),
+            });
+
+            const messageDiv = document.getElementById('message');
+            messageDiv.style.display = 'block';
+
+            if (response.ok) {
+                messageDiv.textContent = 'Pagamento adicionado com sucesso!';
+                messageDiv.className = 'message success';
+                document.getElementById('form-pagamento').reset();
+            } else {
+                const errorText = await response.text();
+                messageDiv.textContent = `Erro: ${errorText}`;
+                messageDiv.className = 'message error';
+            }
+        } catch (error) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.style.display = 'block';
+            messageDiv.textContent = 'Erro ao conectar ao servidor.';
+            messageDiv.className = 'message error';
+        }
+    });
+</script>
+</body>
+</html>

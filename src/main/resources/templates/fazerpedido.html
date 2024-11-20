@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adicionar Pedido</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(to bottom, #87CEFA, #ffffff);
+    }
+
+    .container {
+      background-color: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #007BFF;
+      margin-bottom: 15px;
+    }
+
+    form {
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input, button {
+      width: calc(100% - 10px);
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    button:last-of-type {
+      background-color: #6c757d;
+    }
+
+    button:last-of-type:hover {
+      background-color: #5a6268;
+    }
+
+    table {
+      margin: 15px auto;
+      border-collapse: collapse;
+      width: 100%;
+      background-color: #fff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    table th, table td {
+      padding: 10px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+
+    table th {
+      background-color: #007BFF;
+      color: white;
+    }
+
+    table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    #mensagem {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      display: none;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    #mensagem.sucesso {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    #mensagem.erro {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <form id="form-adicionar-pedido">
+    <h2>Adicionar Pedido</h2>
+
+    <label for="idPagamento">ID do Pagamento:</label>
+    <input type="number" id="idPagamento" name="idPagamento" required>
+    <table>
+      <thead>
+      <tr>
+        <th>ID do Pagamento</th>
+        <th>Valor Total</th>
+      </tr>
+      </thead>
+      <tbody id="pagamentos-tbody">
+      <!-- Dados serão preenchidos dinamicamente -->
+      </tbody>
+    </table>
+
+    <label for="idInstalacao">ID da Instalação:</label>
+    <input type="number" id="idInstalacao" name="idInstalacao" required>
+    <table>
+      <thead>
+      <tr>
+        <th>ID da Instalação</th>
+      </tr>
+      </thead>
+      <tbody id="instalacoes-tbody">
+      <!-- Dados serão preenchidos dinamicamente -->
+      </tbody>
+    </table>
+
+    <label for="cpfCliente">CPF do Cliente (opcional):</label>
+    <input type="text" id="cpfCliente" name="cpfCliente" maxlength="11">
+    <table>
+      <thead>
+      <tr>
+        <th>CPF</th>
+        <th>Nome</th>
+      </tr>
+      </thead>
+      <tbody id="clientes-cpf-tbody">
+      <!-- Dados serão preenchidos dinamicamente -->
+      </tbody>
+    </table>
+
+    <label for="cnpjCliente">CNPJ do Cliente (opcional):</label>
+    <input type="text" id="cnpjCliente" name="cnpjCliente" maxlength="14">
+
+    <button type="submit">Adicionar</button>
+    <button type="button" onclick="history.back()">Voltar</button>
+
+    <div id="mensagem"></div>
+  </form>
+</div>
+
+<script>
+  document.getElementById('form-adicionar-pedido').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const pedido = {
+      idPagamento: document.getElementById('idPagamento').value,
+      idInstalacao: document.getElementById('idInstalacao').value,
+      cpfCliente: document.getElementById('cpfCliente').value || null,
+      cnpjCliente: document.getElementById('cnpjCliente').value || null,
+    };
+
+    const mensagemDiv = document.getElementById('mensagem');
+
+    try {
+      const response = await fetch('http://localhost:8080/pedidos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(pedido),
+      });
+
+      if (response.ok) {
+        mensagemDiv.textContent = 'Pedido adicionado com sucesso!';
+        mensagemDiv.className = 'sucesso';
+        mensagemDiv.style.display = 'block';
+        document.getElementById('form-adicionar-pedido').reset();
+      } else {
+        const errorText = await response.text();
+        mensagemDiv.textContent = `Erro ao adicionar pedido: ${errorText}`;
+        mensagemDiv.className = 'erro';
+        mensagemDiv.style.display = 'block';
+      }
+    } catch (error) {
+      mensagemDiv.textContent = 'Erro ao conectar ao servidor.';
+      mensagemDiv.className = 'erro';
+      mensagemDiv.style.display = 'block';
+    }
+
+    setTimeout(() => {
+      mensagemDiv.style.display = 'none';
+    }, 5000);
+  });
+
+  async function carregarPagamentos() {
+    const tbody = document.getElementById('pagamentos-tbody');
+
+    try {
+      const response = await fetch('http://localhost:8080/formaspagamento');
+      if (!response.ok) {
+        throw new Error('Erro ao carregar pagamentos.');
+      }
+
+      const pagamentos = await response.json();
+      tbody.innerHTML = '';
+
+      pagamentos.forEach(pagamento => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${pagamento.idPagamento}</td>
+          <td>${pagamento.valorTotal}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    } catch (error) {
+      tbody.innerHTML = '<tr><td colspan="2" style="text-align: center; color: red;">Erro ao carregar pagamentos.</td></tr>';
+    }
+  }
+
+  async function carregarInstalacoes() {
+    const tbody = document.getElementById('instalacoes-tbody');
+
+    try {
+      const response = await fetch('http://localhost:8080/instalacoes');
+      if (!response.ok) {
+        throw new Error('Erro ao carregar instalações.');
+      }
+
+      const instalacoes = await response.json();
+      tbody.innerHTML = '';
+
+      instalacoes.forEach(instalacao => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${instalacao.idInstalacao}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    } catch (error) {
+      tbody.innerHTML = '<tr><td style="text-align: center; color: red;">Erro ao carregar instalações.</td></tr>';
+    }
+  }
+
+  async function carregarClientes() {
+    const tbodyCPF = document.getElementById('clientes-cpf-tbody');
+
+    try {
+      const response = await fetch('http://localhost:8080/clientes');
+      if (!response.ok) {
+        throw new Error('Erro ao carregar clientes.');
+      }
+
+      const clientes = await response.json();
+      tbodyCPF.innerHTML = '';
+
+      clientes.forEach(cliente => {
+        if (cliente.cpf) {
+          const trCPF = document.createElement('tr');
+          trCPF.innerHTML = `
+            <td>${cliente.cpf}</td>
+            <td>${cliente.nome}</td>
+          `;
+          tbodyCPF.appendChild(trCPF);
+        }
+      });
+    } catch (error) {
+      tbodyCPF.innerHTML = '<tr><td colspan="2" style="text-align: center; color: red;">Erro ao carregar clientes.</td></tr>';
+    }
+  }
+
+  carregarPagamentos();
+  carregarInstalacoes();
+  carregarClientes();
+</script>
+</body>
+</html>

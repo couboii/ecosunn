@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formas de Pagamento</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(to bottom, #add8e6, #ffffff); /* Gradiente azul claro */
+    }
+    .container {
+      text-align: center;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 400px;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .button-container a, .button-container button {
+      text-decoration: none;
+      background-color: #007BFF;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 16px;
+      text-align: center;
+      transition: background-color 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+    .button-container a:hover, .button-container button:hover {
+      background-color: #0056b3;
+    }
+    .button-container button {
+      background-color: #6c757d;
+    }
+    .button-container button:hover {
+      background-color: #5a6268;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1></h1>
+  <div class="button-container">
+    <a href="/fazerPagamento">Realizar Pagamento</a>
+    <br>
+    <button onclick="history.back()">Voltar</button>
+  </div>
+</div>
+</body>
+</html>

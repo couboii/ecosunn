@@ -153,5 +153,29 @@ public class SpringController {
     public String consultarTecnico(Model model) {
         return "consultatecnico"; // Nome do arquivo HTML na pasta "templates"
     }
+    // FAZER PEDIDO - DIRETÓRIO
+    @GetMapping("/fazerpedido")
+    public String fazerPedido(Model model) {
+        return "fazerpedido"; // Nome do arquivo HTML na pasta "templates"
+    }
+    // ADD PEDIDO - DIRETÓRIO
+    @GetMapping("/addpedido")
+    public String addPedido(Model model) {
+        return "addpedido"; // Nome do arquivo HTML na pasta "templates"
+    }
+    // REALIZAR PAGAMENTO - DIRETÓRIO
+    @GetMapping("/realizarPagamento")
+    public String realizarPagamento(Model model) {
+        return "realizarPagamento"; // Nome do arquivo HTML na pasta "templates"
+    }
+    // FAZER PAGAMENTO - DIRETÓRIO
+    @GetMapping("/fazerPagamento")
+    public String fazerPagamento(Model model) {
+        return "fazerPagamento"; // Nome do arquivo HTML na pasta "templates"
+    }
+
+
+
+
 
 }
