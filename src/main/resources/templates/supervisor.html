@@ -81,22 +81,62 @@
             <th>Supervisionado</th>
         </tr>
         </thead>
-        <tbody>
-        <!-- Exemplos de dados; substitua com dados dinâmicos do banco -->
-        <tr>
-            <td>Supervisor 1</td>
-            <td>Supervisionado 1</td>
-        </tr>
-        <tr>
-            <td>Supervisor 2</td>
-            <td>Supervisionado 2</td>
-        </tr>
-        <tr>
-            <td>Supervisor 3</td>
-            <td>Supervisionado 3</td>
-        </tr>
+        <tbody id="supervisoresTableBody">
+        <!-- Conteúdo será carregado dinamicamente -->
         </tbody>
     </table>
 </div>
+
+<script>
+    async function carregarSupervisores() {
+        const tbody = document.getElementById('supervisoresTableBody');
+        tbody.innerHTML = ''; // Limpa a tabela antes de carregar os dados
+
+        try {
+            const response = await fetch('http://localhost:8080/supervisores');
+            if (!response.ok) {
+                throw new Error('Erro ao buscar os supervisores');
+            }
+
+            const supervisores = await response.json();
+            if (supervisores.length === 0) {
+                const row = document.createElement('tr');
+                const cell = document.createElement('td');
+                cell.colSpan = 2;
+                cell.textContent = 'Nenhum supervisor encontrado.';
+                cell.style.textAlign = 'center';
+                row.appendChild(cell);
+                tbody.appendChild(row);
+                return;
+            }
+
+            supervisores.forEach(({ tecnicoId, supervisorId }) => {
+                const row = document.createElement('tr');
+
+                const supervisorCell = document.createElement('td');
+                supervisorCell.textContent = `${supervisorId}`;
+
+                const supervisionadoCell = document.createElement('td');
+                supervisionadoCell.textContent = `${tecnicoId}`;
+
+                row.appendChild(supervisorCell);
+                row.appendChild(supervisionadoCell);
+                tbody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Erro:', error);
+            const row = document.createElement('tr');
+            const cell = document.createElement('td');
+            cell.colSpan = 2;
+            cell.textContent = 'Erro ao carregar os supervisores.';
+            cell.style.textAlign = 'center';
+            row.appendChild(cell);
+            tbody.appendChild(row);
+        }
+    }
+
+    // Carrega os supervisores ao abrir a página
+    document.addEventListener('DOMContentLoaded', carregarSupervisores);
+</script>
 </body>
 </html>

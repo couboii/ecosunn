@@ -8,12 +8,12 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px 0; /* Espaço no topo e no final */
+            padding: 20px 0;
             display: flex;
             justify-content: center;
             background: linear-gradient(to bottom, #87CEFA, #ffffff);
-            min-height: 100vh; /* Garante que o conteúdo ocupe ao menos toda a altura */
-            overflow-y: auto; /* Habilita rolagem caso necessário */
+            min-height: 100vh;
+            overflow-y: auto;
         }
         form {
             background-color: #fff;
@@ -27,6 +27,12 @@
         h2 {
             text-align: center;
             color: #007BFF;
+            margin-bottom: 10px;
+        }
+        .disclaimer {
+            font-size: 14px;
+            color: #ff0000;
+            text-align: center;
             margin-bottom: 20px;
         }
         label {
@@ -64,6 +70,10 @@
 <body>
 <form id="form-cadastro-cliente">
     <h2>Cadastro de Cliente</h2>
+    <div class="disclaimer">
+        Deve-se inserir um ID de Instalação válido, caso contrário, o técnico não será criado.
+        Se não existir instalação cadastrada, cadastre primeiro a instalação antes de prosseguir.
+    </div>
     <label for="nome">Nome:</label>
     <input type="text" id="nome" name="nome" required>
 
