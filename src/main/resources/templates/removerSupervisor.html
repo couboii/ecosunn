@@ -65,43 +65,6 @@
     <button type="button" onclick="history.back()">Voltar</button>
 </form>
 
-<script>
-    document.getElementById('form-remover-supervisor').addEventListener('submit', async (event) => {
-        event.preventDefault();
 
-        const idSupervisor = document.getElementById('idSupervisor').value.trim();
-
-        // Validação simples no frontend
-        if (!idSupervisor || isNaN(idSupervisor) || parseInt(idSupervisor) <= 0) {
-            alert('Por favor, insira um ID válido.');
-            return;
-        }
-
-        const confirmacao = confirm(`Tem certeza de que deseja remover o supervisor com ID ${idSupervisor}?`);
-        if (!confirmacao) return;
-
-        try {
-            const response = await fetch(`http://localhost:8080/supervisores/${idSupervisor}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (response.ok) {
-                alert(`Supervisor com ID ${idSupervisor} removido com sucesso!`);
-                document.getElementById('form-remover-supervisor').reset();
-            } else if (response.status === 404) {
-                alert('Supervisor não encontrado. Verifique o ID e tente novamente.');
-            } else {
-                const errorData = await response.json();
-                alert(`Erro ao remover supervisor: ${errorData.message || 'Erro desconhecido.'}`);
-            }
-        } catch (error) {
-            console.error('Erro:', error);
-            alert('Erro ao conectar ao servidor. Tente novamente mais tarde.');
-        }
-    });
-</script>
 </body>
 </html>
