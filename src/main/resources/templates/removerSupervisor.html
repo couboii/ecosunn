@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remover Técnico Supervisor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to bottom, #87CEFA, #ffffff);
+        }
+        form {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+            text-align: left;
+        }
+        h2 {
+            text-align: center;
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        input, button {
+            width: calc(100% - 10px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<form id="form-remover-supervisor">
+    <h2>Remover Técnico Supervisor</h2>
+    <label for="idSupervisor">ID do Técnico Supervisor:</label>
+    <input type="number" id="idSupervisor" name="idSupervisor" required>
+
+    <button type="submit">Remover</button>
+    <button type="button" onclick="history.back()">Voltar</button>
+</form>
+
+<script>
+    document.getElementById('form-remover-supervisor').addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const idSupervisor = document.getElementById('idSupervisor').value;
+
+        try {
+            const response = await fetch(`http://localhost:8080/supervisores/${idSupervisor}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                alert('Supervisor removido com sucesso!');
+                document.getElementById('form-remover-supervisor').reset();
+            } else {
+                alert('Erro ao remover supervisor.');
+            }
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('Não foi possível conectar ao servidor.');
+        }
+    });
+</script>
+</body>
+</html>
