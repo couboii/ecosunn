@@ -54,7 +54,14 @@ public class InstalacaoDAO {
         return jdbcTemplate.queryForObject(sql, Integer.class, idInstalacao);
     }
     public List<Map<String, Object>> contarTecnicosTodasInstalacoes() {
-        String sql = "SELECT ID_instalacao, ContarTecnicosPorInstalacao(ID_instalacao) AS count_tecnicos FROM Instalacao";
+        String sql = """
+            SELECT i.ID_instalacao AS ID_instalacao, COUNT(t.ID_Tecnico) AS count_tecnicos
+            FROM Instalacao i
+            LEFT JOIN Tecnico t ON i.ID_instalacao = t.fk_Instalacao_ID_instalacao
+            GROUP BY i.ID_instalacao
+            ORDER BY i.ID_instalacao
+        """;
+
         return jdbcTemplate.queryForList(sql);
     }
 
