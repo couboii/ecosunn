@@ -26,10 +26,9 @@
       box-sizing: border-box;
     }
 
-    h2 {
+    h2, h3 {
       text-align: center;
       color: #333;
-      margin-bottom: 20px;
     }
 
     form {
@@ -81,8 +80,29 @@
       background-color: #5a6268;
     }
 
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    table th, table td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+
+    table th {
+      background-color: #007BFF;
+      color: white;
+    }
+
+    table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
     @media (max-width: 600px) {
-      h2 {
+      h2, h3 {
         font-size: 18px;
       }
 
@@ -122,11 +142,24 @@
     <button type="submit">Adicionar</button>
     <button type="button" onclick="history.back()">Voltar</button>
   </form>
+
+  <h3>Fornecedores Disponíveis</h3>
+  <table id="fornecedores-tabela">
+    <thead>
+    <tr>
+      <th>CNPJ</th>
+      <th>Nome da Empresa</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Dados serão preenchidos dinamicamente -->
+    </tbody>
+  </table>
 </div>
 
 <script>
   document.getElementById('form-adicionar-placa').addEventListener('submit', async (event) => {
-    event.preventDefault(); // Evita o envio tradicional do formulário
+    event.preventDefault();
 
     const placaSolar = {
       idPlaca: document.getElementById('idPlaca').value,
@@ -148,7 +181,7 @@
 
       if (response.ok) {
         alert('Placa solar adicionada com sucesso!');
-        document.getElementById('form-adicionar-placa').reset(); // Limpa o formulário
+        document.getElementById('form-adicionar-placa').reset();
       } else {
         alert('Erro ao adicionar placa solar. Verifique os dados e tente novamente.');
       }
@@ -157,6 +190,31 @@
       alert('Não foi possível conectar ao servidor.');
     }
   });
+
+  async function carregarFornecedores() {
+    try {
+      const response = await fetch('http://localhost:8080/fornecedores');
+      if (!response.ok) throw new Error('Erro ao carregar fornecedores.');
+
+      const fornecedores = await response.json();
+      const tabelaBody = document.querySelector('#fornecedores-tabela tbody');
+      tabelaBody.innerHTML = ''; // Limpa tabela antes de preencher
+
+      fornecedores.forEach(fornecedor => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${fornecedor.cnpj}</td>
+          <td>${fornecedor.nomeEmpresa}</td>
+        `;
+        tabelaBody.appendChild(row);
+      });
+    } catch (error) {
+      console.error('Erro ao carregar fornecedores:', error);
+    }
+  }
+
+  // Carrega os fornecedores ao abrir a página
+  carregarFornecedores();
 </script>
 </body>
 </html>
