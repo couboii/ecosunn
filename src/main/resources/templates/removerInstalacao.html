@@ -109,6 +109,18 @@
                 font-size: 14px;
             }
         }
+
+        .success-message {
+            color: #28a745;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-weight: bold;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -117,8 +129,8 @@
     <form id="removerInstalacaoForm">
         <label for="idInstalacao">ID da Instalação:</label>
         <input type="number" id="idInstalacao" name="idInstalacao" required>
-        <button type="submit" onclick="removerInstalacao()">Remover</button>
-        <button type="button" onclick="history.back()">Voltar</button>
+        <button type="submit" onclick="removerInstalacao(event)">Remover</button>
+        <button type="button" onclick="history.back()">Voltar</button> <!-- Lógica antiga do botão "Voltar" -->
     </form>
     <h2>IDs de Instalações Atuais</h2>
     <table>
@@ -131,6 +143,8 @@
         <!-- Dados serão preenchidos dinamicamente -->
         </tbody>
     </table>
+
+    <div id="message"></div> <!-- Área para exibir mensagens -->
 </div>
 
 <script>
@@ -158,7 +172,9 @@
         }
     }
 
-    async function removerInstalacao() {
+    async function removerInstalacao(event) {
+        event.preventDefault(); // Impede o envio padrão do formulário
+
         const idInstalacao = document.getElementById("idInstalacao").value;
 
         try {
@@ -167,15 +183,15 @@
             });
 
             if (response.ok) {
-                alert("Instalação removida com sucesso!");
+                document.getElementById("message").innerHTML = "<p class='success-message'>Instalação removida com sucesso!</p>";
                 carregarInstalacoes(); // Atualiza a lista de IDs
                 document.getElementById("removerInstalacaoForm").reset();
             } else {
                 const error = await response.json();
-                alert("Erro ao remover instalação: " + error.message);
+                document.getElementById("message").innerHTML = `<p class='error-message'>Erro ao remover instalação: ${error.message}</p>`;
             }
         } catch (error) {
-            alert("Erro ao conectar ao servidor: " + error.message);
+            document.getElementById("message").innerHTML = `<p class='error-message'>Erro ao conectar ao servidor: ${error.message}</p>`;
         }
     }
 
