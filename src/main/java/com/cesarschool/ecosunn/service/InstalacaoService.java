@@ -70,7 +70,6 @@ public class InstalacaoService {
         if (idInstalacao <= 0) {
             throw new IllegalArgumentException("ID de instalação inválido");
         }
-        LOGGER.info("Contando técnicos para instalação com ID: " + idInstalacao);
         return instalacaoDAO.contarTecnicosPorInstalacao(idInstalacao);
     }
 

@@ -55,12 +55,15 @@ public class InstalacaoController {
         instalacaoService.deleteInstalacao(id);
         return ResponseEntity.ok("Instalação excluída com sucesso.");
     }
-    // Endpoint para contar técnicos associados a uma instalação
     @GetMapping("/{id}/tecnicos/count")
     public ResponseEntity<Integer> contarTecnicosPorInstalacao(@PathVariable int id) {
         int count = instalacaoService.contarTecnicosPorInstalacao(id);
+        if (count == 0) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(0);
+        }
         return ResponseEntity.ok(count);
     }
+
     @GetMapping("/tecnicos/count")
     public ResponseEntity<List<Map<String, Object>>> contarTecnicosTodasInstalacoes() {
         List<Map<String, Object>> counts = instalacaoService.contarTecnicosTodasInstalacoes();
@@ -68,4 +71,3 @@ public class InstalacaoController {
     }
 
 }
-

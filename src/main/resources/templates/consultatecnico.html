@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Consultar Técnicos por Instalação</title>
   <style>
+    /* Estilo otimizado */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -17,6 +18,7 @@
       min-height: 100vh;
     }
 
+
     .container {
       background-color: #fff;
       padding: 20px;
@@ -27,21 +29,25 @@
       text-align: center;
     }
 
+
     h2 {
       color: #333;
       margin-bottom: 20px;
     }
+
 
     form {
       display: flex;
       flex-direction: column;
     }
 
+
     label {
       margin: 10px 0 5px;
       font-weight: bold;
       color: #333;
     }
+
 
     input {
       padding: 10px;
@@ -51,6 +57,7 @@
       font-size: 16px;
       width: 100%;
     }
+
 
     button {
       padding: 10px;
@@ -63,17 +70,21 @@
       margin-bottom: 10px;
     }
 
+
     button:hover {
       background-color: #45a049;
     }
+
 
     button[type="button"] {
       background-color: #6c757d;
     }
 
+
     button[type="button"]:hover {
       background-color: #5a6268;
     }
+
 
     table {
       margin: 20px auto;
@@ -84,30 +95,49 @@
       border-radius: 10px;
     }
 
+
     table th, table td {
       padding: 10px;
       text-align: left;
       border: 1px solid #ddd;
     }
 
+
     table th {
       background-color: #6a5acd;
       color: white;
     }
 
+
     table tr:nth-child(even) {
       background-color: #f2f2f2;
     }
+
 
     @media (max-width: 600px) {
       table th, table td {
         font-size: 14px;
       }
 
+
       button {
         font-size: 14px;
         padding: 8px 15px;
       }
+    }
+
+
+    #resultado p {
+      font-size: 18px;
+      color: #333;
+      font-weight: bold;
+    }
+
+
+    #loading {
+      font-size: 16px;
+      color: #555;
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -121,10 +151,15 @@
     <button type="button" onclick="history.back()">Voltar</button>
   </form>
 
+
   <h2>Resultado da Consulta</h2>
   <div id="resultado">
     <!-- Resultado da consulta será exibido aqui -->
   </div>
+
+
+  <div id="loading" style="display: none;">Carregando...</div>
+
 
   <h2>Instalações Disponíveis</h2>
   <table>
@@ -139,10 +174,14 @@
   </table>
 </div>
 
+
 <script>
   // Função para carregar os IDs de instalações
   async function carregarInstalacoes() {
     const tbody = document.getElementById('instalacoes-tbody');
+    const loading = document.getElementById('loading');
+    loading.style.display = 'block';
+
 
     try {
       const response = await fetch('http://localhost:8080/instalacoes');
@@ -150,8 +189,10 @@
         throw new Error('Erro ao carregar instalações.');
       }
 
+
       const instalacoes = await response.json();
       tbody.innerHTML = '';
+
 
       instalacoes.forEach(instalacao => {
         const tr = document.createElement('tr');
@@ -161,38 +202,48 @@
     } catch (error) {
       console.error('Erro ao carregar instalações:', error);
       tbody.innerHTML = '<tr><td style="text-align: center; color: red;">Erro ao carregar instalações.</td></tr>';
+    } finally {
+      loading.style.display = 'none';
     }
   }
+
 
   // Função para consultar a quantidade de técnicos por instalação
   document.getElementById('form-consultar').addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const idInstalacao = document.getElementById('idInstalacao').value;
 
-    if (!idInstalacao) {
-      alert('Por favor, insira o ID da instalação.');
+    const idInstalacao = document.getElementById('idInstalacao').value.trim();
+    const resultadoDiv = document.getElementById('resultado');
+
+
+    if (!idInstalacao || isNaN(idInstalacao)) {
+      alert('Por favor, insira um ID válido para a instalação.');
       return;
     }
+
+
+    resultadoDiv.innerHTML = '<p>Carregando...</p>';
+
 
     try {
       const response = await fetch(`http://localhost:8080/instalacoes/${idInstalacao}/tecnicos/count`);
       if (response.ok) {
         const quantidade = await response.json();
-        document.getElementById('resultado').innerHTML = `
+        resultadoDiv.innerHTML = `
           <p>Quantidade de Técnicos na Instalação ${idInstalacao}: <strong>${quantidade}</strong></p>
         `;
       } else if (response.status === 404) {
-        alert('Instalação não encontrada.');
-        document.getElementById('resultado').innerHTML = '';
+        resultadoDiv.innerHTML = `<p style="color: red;">Instalação não encontrada.</p>`;
       } else {
-        alert('Erro ao consultar técnicos.');
+        resultadoDiv.innerHTML = `<p style="color: red;">Erro ao consultar técnicos.</p>`;
       }
     } catch (error) {
       console.error('Erro:', error);
-      alert('Não foi possível conectar ao servidor.');
+      resultadoDiv.innerHTML = `<p style="color: red;">Não foi possível conectar ao servidor.</p>`;
     }
   });
+
 
   // Carrega os IDs das instalações ao abrir a página
   carregarInstalacoes();

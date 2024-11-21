@@ -50,7 +50,11 @@ public class InstalacaoDAO {
     }
     // Método para contar técnicos associados a uma instalação
     public int contarTecnicosPorInstalacao(int idInstalacao) {
-        String sql = "SELECT ContarTecnicosPorInstalacao(?)";
+        String sql = """
+        SELECT COUNT(*) 
+        FROM Tecnico 
+        WHERE fk_Instalacao_ID_instalacao = ?
+    """;
         return jdbcTemplate.queryForObject(sql, Integer.class, idInstalacao);
     }
     public List<Map<String, Object>> contarTecnicosTodasInstalacoes() {
